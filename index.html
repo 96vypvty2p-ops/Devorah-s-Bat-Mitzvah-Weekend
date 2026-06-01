@@ -8,16 +8,10 @@
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Nunito', sans-serif; background: #fff5f8; color: #3d1a2e; min-height: 100vh; }
-  .hero {
-    background: linear-gradient(160deg, #ffe0ee 0%, #fff5f8 40%, #fce8f5 100%);
-    padding: 60px 20px 50px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
+  .hero { background: linear-gradient(160deg, #ffe0ee 0%, #fff5f8 40%, #fce8f5 100%); padding: 60px 20px 50px; text-align: center; position: relative; overflow: hidden; }
   .confetti { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
   .jewish-header { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px; }
-  .main-name { font-family: 'Playfair Display', serif; font-size: clamp(52px, 10vw, 80px); font-weight: 700; color: #c4406e; line-height: 1.1; margin-bottom: 6px; text-shadow: 2px 2px 0px #f9c8db; }
+  .main-name { font-family: 'Playfair Display', serif; font-size: clamp(52px, 10vw, 80px); font-weight: 700; color: #c4406e; line-height: 1.1; margin-bottom: 6px; text-shadow: 2px 2px 0px #f9c8db; cursor: pointer; user-select: none; }
   .bat-mitzvah-text { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 32px); font-style: italic; color: #9b3060; margin-bottom: 30px; }
   .divider { width: 120px; height: 2px; background: linear-gradient(to right, transparent, #e8a0c0, transparent); margin: 20px auto; }
   .date-box { display: inline-block; background: white; border: 2px solid #f5c0d5; border-radius: 20px; padding: 20px 40px; margin: 20px auto; box-shadow: 0 4px 20px rgba(196,64,110,0.1); }
@@ -41,9 +35,230 @@
   .rsvp-sub { font-size: 14px; opacity: 0.85; margin-bottom: 12px; letter-spacing: 1px; }
   .footer { background: #3d1a2e; color: #f5c0d5; text-align: center; padding: 24px; font-size: 13px; letter-spacing: 1px; }
   .hearts { font-size: 18px; margin: 0 6px; color: #e8a0c0; }
+
+  /* Easter egg */
+  #lindsey-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #lindsey-overlay.show { display: flex; }
+  #lindsey-box {
+    background: #fff5f8;
+    border: 3px solid #f5c0d5;
+    border-radius: 30px;
+    padding: 32px 40px;
+    text-align: center;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 340px;
+    width: 90%;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.2) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  #lindsey-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #c4406e;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+  #lindsey-box p {
+    font-size: 14px;
+    color: #9b7080;
+    margin-top: 6px;
+  }
+  .close-btn {
+    background: #c4406e;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+  .close-btn:hover { background: #a8305a; }
+  .secret-hint { font-size: 11px; color: #888; letter-spacing: 1px; }
+
+  /* Dancing Lisa SVG animation */
+  .dancer-wrap { position: relative; width: 120px; height: 160px; margin: 0 auto 8px; }
+
+  /* Body bounce */
+  @keyframes bodyBounce {
+    0%, 100% { transform: translateY(0px) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+  }
+  /* Left arm wave */
+  @keyframes leftArm {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(-80deg); }
+  }
+  /* Right arm wave */
+  @keyframes rightArm {
+    0%, 100% { transform: rotate(30deg); }
+    50% { transform: rotate(80deg); }
+  }
+  /* Leg kick left */
+  @keyframes leftLeg {
+    0%, 100% { transform: rotate(10deg); }
+    50% { transform: rotate(-20deg); }
+  }
+  /* Leg kick right */
+  @keyframes rightLeg {
+    0%, 100% { transform: rotate(-10deg); }
+    50% { transform: rotate(20deg); }
+  }
+  /* Hair bounce */
+  @keyframes hairBounce {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+
+  .lisa-body { animation: bodyBounce 0.5s ease-in-out infinite; transform-origin: center bottom; }
+  .lisa-left-arm { animation: leftArm 0.5s ease-in-out infinite; transform-origin: 38px 68px; }
+  .lisa-right-arm { animation: rightArm 0.5s ease-in-out infinite 0.25s; transform-origin: 82px 68px; }
+  .lisa-left-leg { animation: leftLeg 0.5s ease-in-out infinite; transform-origin: 52px 118px; }
+  .lisa-right-leg { animation: rightLeg 0.5s ease-in-out infinite 0.25s; transform-origin: 68px 118px; }
+  .lisa-hair { animation: hairBounce 0.5s ease-in-out infinite; transform-origin: center top; }
 </style>
 </head>
 <body>
+
+<!-- Lindsey Easter Egg -->
+<div id="lindsey-overlay">
+  <div id="lindsey-box">
+
+    <!-- Tina-inspired dancer -->
+    <div class="dancer-wrap">
+      <svg width="120" height="160" viewBox="0 0 120 160">
+
+        <!-- Left arm -->
+        <g class="lisa-left-arm">
+          <line x1="40" y1="72" x2="18" y2="58" stroke="#f4c2a1" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="15" cy="56" r="5" fill="#f4c2a1"/>
+        </g>
+        <!-- Right arm -->
+        <g class="lisa-right-arm">
+          <line x1="80" y1="72" x2="102" y2="58" stroke="#f4c2a1" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="105" cy="56" r="5" fill="#f4c2a1"/>
+        </g>
+
+        <g class="lisa-body">
+          <!-- Left leg + white sock + black shoe -->
+          <g class="lisa-left-leg">
+            <line x1="52" y1="118" x2="44" y2="148" stroke="#4a7fb5" stroke-width="9" stroke-linecap="round"/>
+            <line x1="44" y1="140" x2="40" y2="154" stroke="white" stroke-width="9" stroke-linecap="round"/>
+            <ellipse cx="38" cy="156" rx="9" ry="5" fill="#1a1a1a" transform="rotate(-10 38 156)"/>
+          </g>
+          <!-- Right leg -->
+          <g class="lisa-right-leg">
+            <line x1="68" y1="118" x2="76" y2="148" stroke="#4a7fb5" stroke-width="9" stroke-linecap="round"/>
+            <line x1="76" y1="140" x2="80" y2="154" stroke="white" stroke-width="9" stroke-linecap="round"/>
+            <ellipse cx="82" cy="156" rx="9" ry="5" fill="#1a1a1a" transform="rotate(10 82 156)"/>
+          </g>
+
+          <!-- Denim skirt -->
+          <ellipse cx="60" cy="110" rx="26" ry="14" fill="#4a7fb5"/>
+          <rect x="34" y="96" width="52" height="18" rx="4" fill="#4a7fb5"/>
+
+          <!-- Blue shirt/torso -->
+          <rect x="40" y="66" width="40" height="34" rx="8" fill="#6aabde"/>
+
+          <!-- Head -->
+          <circle cx="60" cy="50" r="22" fill="#f4c2a1"/>
+
+          <!-- Dark hair - straight, shoulder length -->
+          <g class="lisa-hair">
+            <!-- Top of hair -->
+            <ellipse cx="60" cy="32" rx="22" ry="10" fill="#2a1a0a"/>
+            <!-- Left side hair -->
+            <rect x="36" y="30" width="10" height="30" rx="5" fill="#2a1a0a"/>
+            <!-- Right side hair -->
+            <rect x="74" y="30" width="10" height="30" rx="5" fill="#2a1a0a"/>
+            <!-- Back hair -->
+            <rect x="38" y="28" width="44" height="8" rx="4" fill="#2a1a0a"/>
+          </g>
+
+          <!-- Glasses -->
+          <rect x="44" y="46" width="13" height="9" rx="3" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <rect x="63" y="46" width="13" height="9" rx="3" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="57" y1="50" x2="63" y2="50" stroke="#1a1a1a" stroke-width="2"/>
+          <!-- Glasses arms -->
+          <line x1="44" y1="50" x2="40" y2="50" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="76" y1="50" x2="80" y2="50" stroke="#1a1a1a" stroke-width="2"/>
+
+          <!-- Eyes behind glasses -->
+          <circle cx="50" cy="50" r="3" fill="#1a1a1a"/>
+          <circle cx="69" cy="50" r="3" fill="#1a1a1a"/>
+          <circle cx="51" cy="49" r="1" fill="white"/>
+          <circle cx="70" cy="49" r="1" fill="white"/>
+
+          <!-- Mouth - Tina's flat expression 😐 -->
+          <line x1="53" y1="62" x2="67" y2="62" stroke="#c4706e" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- Music notes -->
+        <text x="94" y="28" font-size="16" fill="#c4406e" opacity="0.8" style="animation: bodyBounce 0.5s ease-in-out infinite 0.1s">♪</text>
+        <text x="8" y="38" font-size="13" fill="#e8a0c0" opacity="0.8" style="animation: bodyBounce 0.5s ease-in-out infinite 0.3s">♫</text>
+      </svg>
+    </div>
+
+    <h2>Hi Lindsey.</h2>
+    <p style="font-size:18px; font-weight:700; color:#c4406e; margin: 8px 0 16px;">Who loves ya, baby. 🍭</p>
+
+    <!-- Telly Savalas illustrated portrait -->
+    <svg width="120" height="140" viewBox="0 0 120 140" style="margin: 0 auto; display:block;">
+      <!-- Neck -->
+      <rect x="48" y="105" width="24" height="20" rx="4" fill="#c8956a"/>
+      <!-- Suit collar -->
+      <path d="M30 130 L48 108 L60 118 L72 108 L90 130 Z" fill="#1a1a1a"/>
+      <!-- Shirt/tie -->
+      <path d="M54 112 L60 118 L66 112 L63 130 L57 130 Z" fill="white"/>
+      <path d="M58 114 L60 118 L62 114 L61 130 L59 130 Z" fill="#c4406e"/>
+      <!-- Head - bald! -->
+      <circle cx="60" cy="68" r="38" fill="#c8956a"/>
+      <!-- Shiny bald head highlight -->
+      <ellipse cx="52" cy="46" rx="10" ry="6" fill="#daa97a" opacity="0.6"/>
+      <!-- Ears -->
+      <ellipse cx="22" cy="70" rx="7" ry="9" fill="#c8956a"/>
+      <ellipse cx="98" cy="70" rx="7" ry="9" fill="#c8956a"/>
+      <!-- Strong eyebrows -->
+      <path d="M36 56 Q48 50 54 54" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M66 54 Q72 50 84 56" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+      <!-- Eyes -->
+      <circle cx="46" cy="64" r="7" fill="white"/>
+      <circle cx="74" cy="64" r="7" fill="white"/>
+      <circle cx="47" cy="65" r="4" fill="#3a2a1a"/>
+      <circle cx="75" cy="65" r="4" fill="#3a2a1a"/>
+      <circle cx="48" cy="63" r="1.5" fill="white"/>
+      <circle cx="76" cy="63" r="1.5" fill="white"/>
+      <!-- Nose -->
+      <path d="M58 70 Q60 80 62 70" fill="none" stroke="#a06040" stroke-width="1.5"/>
+      <ellipse cx="55" cy="78" rx="4" ry="2.5" fill="#b07050"/>
+      <ellipse cx="65" cy="78" rx="4" ry="2.5" fill="#b07050"/>
+      <!-- Confident smile -->
+      <path d="M44 90 Q60 102 76 90" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Lollipop! -->
+      <line x1="85" y1="88" x2="100" y2="72" stroke="#888" stroke-width="2.5"/>
+      <circle cx="103" cy="69" r="8" fill="#e8607a"/>
+      <circle cx="103" cy="69" r="5" fill="#f5a0b5"/>
+      <circle cx="101" cy="67" r="2" fill="white" opacity="0.5"/>
+    </svg>
+
+  </div>
+  <button class="close-btn" onclick="closeLindsey()">go back to work</button>
+  <div class="secret-hint">🤫 don't tell anyone</div>
+</div>
 
 <div class="hero">
   <svg class="confetti" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
@@ -65,7 +280,6 @@
       <polygon points="30,13 37,25 23,25" fill="none" stroke="#0038b8" stroke-width="1.6" stroke-linejoin="round"/>
       <polygon points="30,27 37,15 23,15" fill="none" stroke="#0038b8" stroke-width="1.6" stroke-linejoin="round"/>
     </svg>
-
     <svg width="56" height="56" viewBox="0 0 56 56">
       <rect x="4" y="8" width="7" height="40" rx="3.5" fill="#c9845a"/>
       <circle cx="7.5" cy="8" r="5" fill="#b06a3e"/>
@@ -82,7 +296,6 @@
       <ellipse cx="10" cy="28" rx="2" ry="18" fill="#f0e6c8" stroke="#e8d5a0" stroke-width="0.8"/>
       <ellipse cx="46" cy="28" rx="2" ry="18" fill="#f0e6c8" stroke="#e8d5a0" stroke-width="0.8"/>
     </svg>
-
     <svg width="60" height="40" viewBox="0 0 60 40" style="border-radius:3px; border: 0.5px solid #bbb; display:block; flex-shrink:0;">
       <rect width="60" height="40" fill="white"/>
       <rect x="0" y="5" width="60" height="7" fill="#0038b8"/>
@@ -92,7 +305,7 @@
     </svg>
   </div>
 
-  <div class="main-name">Devora</div>
+  <div class="main-name" onclick="handleNameClick()">Devora</div>
   <div class="bat-mitzvah-text">becomes a Bat Mitzvah</div>
   <div class="divider"></div>
 
@@ -101,7 +314,6 @@
     <div class="date-main">January 30, 2027</div>
     <div class="date-sub">14 Shevat 5787</div>
   </div>
-
   <div class="location">📍 Agudas Achim Synagogue &nbsp;·&nbsp; Austin, Texas</div>
 </div>
 
@@ -109,30 +321,10 @@
   <div class="section-title">A weekend to celebrate</div>
   <div class="section-sub">January 29 – February 1, 2027</div>
   <div class="events-grid">
-    <div class="event-card">
-      <div class="event-icon">🕯️</div>
-      <div class="event-day">Friday</div>
-      <div class="event-name">Shabbat Dinner</div>
-      <div class="event-detail">Jan 29 · Evening</div>
-    </div>
-    <div class="event-card">
-      <div class="event-icon">✡️</div>
-      <div class="event-day">Saturday</div>
-      <div class="event-name">Morning Service</div>
-      <div class="event-detail">Jan 30 · Morning</div>
-    </div>
-    <div class="event-card">
-      <div class="event-icon">🎉</div>
-      <div class="event-day">Saturday</div>
-      <div class="event-name">Celebration Party</div>
-      <div class="event-detail">Jan 30 · Evening</div>
-    </div>
-    <div class="event-card">
-      <div class="event-icon">☀️</div>
-      <div class="event-day">Sunday</div>
-      <div class="event-name">Farewell Brunch</div>
-      <div class="event-detail">Jan 31 · Morning</div>
-    </div>
+    <div class="event-card"><div class="event-icon">🕯️</div><div class="event-day">Friday</div><div class="event-name">Shabbat Dinner</div><div class="event-detail">Jan 29 · Evening</div></div>
+    <div class="event-card"><div class="event-icon">✡️</div><div class="event-day">Saturday</div><div class="event-name">Morning Service</div><div class="event-detail">Jan 30 · Morning</div></div>
+    <div class="event-card"><div class="event-icon">🎉</div><div class="event-day">Saturday</div><div class="event-name">Celebration Party</div><div class="event-detail">Jan 30 · Evening</div></div>
+    <div class="event-card"><div class="event-icon">☀️</div><div class="event-day">Sunday</div><div class="event-name">Farewell Brunch</div><div class="event-detail">Jan 31 · Morning</div></div>
   </div>
 </div>
 
@@ -150,5 +342,21 @@
   <span class="hearts">♥</span>
 </div>
 
+<script>
+  let clickCount = 0;
+  let clickTimer;
+  function handleNameClick() {
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCount = 0; }, 2500);
+    if (clickCount >= 5) {
+      clickCount = 0;
+      document.getElementById('lindsey-overlay').classList.add('show');
+    }
+  }
+  function closeLindsey() {
+    document.getElementById('lindsey-overlay').classList.remove('show');
+  }
+</script>
 </body>
 </html>
