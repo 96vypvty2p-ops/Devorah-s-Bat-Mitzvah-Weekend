@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devora's Bat Mitzvah · Planning Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Nunito:wght@400;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: #f0f4ff; color: #1a2a4a; min-height: 100vh; padding: 24px 20px 40px; }
+  header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid #c9a84c; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 32px; color: #0038b8; margin-bottom: 4px; }
+  header p { font-size: 14px; color: #c9920a; letter-spacing: 2px; text-transform: uppercase; }
+  .flag-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: white; border-radius: 20px; padding: 22px 24px; box-shadow: 0 2px 12px rgba(0,56,184,0.07); border: 1.5px solid #e0e8ff; }
+  .card.full-width { grid-column: 1 / -1; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; color: #0038b8; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid #e8f0ff; display: flex; align-items: center; gap: 8px; }
+  .rsvp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rsvp-item { background: #f0f4ff; border-radius: 14px; padding: 14px; text-align: center; }
+  .rsvp-event { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #c9920a; margin-bottom: 6px; }
+  .rsvp-numbers { display: flex; justify-content: center; gap: 12px; }
+  .rsvp-num { text-align: center; }
+  .rsvp-num .num { font-size: 26px; font-weight: 800; color: #0038b8; line-height: 1; }
+  .rsvp-num .label { font-size: 10px; color: #7a8090; text-transform: uppercase; letter-spacing: 1px; }
+  .rsvp-num.yes .num { color: #27ae60; }
+  .rsvp-num.no .num { color: #e74c3c; }
+  .rsvp-num.pending .num { color: #c9920a; }
+  .edit-note { font-size: 11px; color: #aaa; text-align: right; margin-top: 12px; font-style: italic; }
+  .todo-list { list-style: none; }
+  .todo-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f4ff; cursor: pointer; }
+  .todo-list li:last-child { border-bottom: none; }
+  .todo-list li input[type="checkbox"] { width: 20px; height: 20px; accent-color: #0038b8; flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+  .todo-list li span { font-size: 15px; color: #1a2a4a; line-height: 1.4; }
+  .todo-list li.done span { text-decoration: line-through; color: #aaa; }
+  .todo-tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; letter-spacing: 0.5px; flex-shrink: 0; margin-top: 3px; }
+  .tag-urgent { background: #ffe0e0; color: #e74c3c; }
+  .tag-soon { background: #fff3cd; color: #c9920a; }
+  .tag-later { background: #e0f0ff; color: #0038b8; }
+  .vendor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .vendor-grid { grid-template-columns: 1fr; } }
+  .vendor-card { background: #f8fafe; border: 1px solid #e0e8ff; border-radius: 14px; padding: 14px; }
+  .vendor-category { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #c9920a; margin-bottom: 4px; font-weight: 700; }
+  .vendor-name { font-size: 15px; font-weight: 700; color: #1a2a4a; margin-bottom: 4px; }
+  .vendor-name.tbd { color: #bbb; font-style: italic; font-weight: 400; }
+  .vendor-detail { font-size: 12px; color: #7a8090; }
+  .vendor-status { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-top: 6px; }
+  .status-booked { background: #d4f5e2; color: #27ae60; }
+  .status-looking { background: #fff3cd; color: #c9920a; }
+  .status-tbd { background: #f0f0f0; color: #999; }
+  .dates-list { list-style: none; }
+  .dates-list li { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid #f0f4ff; }
+  .dates-list li:last-child { border-bottom: none; }
+  .date-badge { background: #0038b8; color: white; border-radius: 10px; padding: 6px 10px; font-size: 11px; font-weight: 800; text-align: center; min-width: 54px; flex-shrink: 0; }
+  .date-desc { font-size: 14px; color: #1a2a4a; }
+  .date-sub { font-size: 11px; color: #7a8090; margin-top: 1px; }
+  .guest-bar-wrap { margin: 10px 0; }
+  .guest-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #7a8090; margin-bottom: 4px; }
+  .guest-bar { height: 10px; background: #e8f0ff; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .guest-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(to right, #0038b8, #4a78e8); }
+  .last-updated { text-align: center; font-size: 11px; color: #bbb; margin-top: 28px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flag-row">
+    <svg width="44" height="30" viewBox="0 0 44 30" style="border-radius:3px; border:0.5px solid #ccc;">
+      <rect width="44" height="30" fill="white"/>
+      <rect y="4" width="44" height="5" fill="#0038b8"/>
+      <rect y="21" width="44" height="5" fill="#0038b8"/>
+      <polygon points="22,9 27,18 17,18" fill="none" stroke="#0038b8" stroke-width="1.2"/>
+      <polygon points="22,21 27,12 17,12" fill="none" stroke="#0038b8" stroke-width="1.2"/>
+    </svg>
+    <h1>Planning Dashboard</h1>
+    <svg width="44" height="30" viewBox="0 0 44 30" style="border-radius:3px; border:0.5px solid #ccc;">
+      <rect width="44" height="30" fill="white"/>
+      <rect y="4" width="44" height="5" fill="#0038b8"/>
+      <rect y="21" width="44" height="5" fill="#0038b8"/>
+      <polygon points="22,9 27,18 17,18" fill="none" stroke="#0038b8" stroke-width="1.2"/>
+      <polygon points="22,21 27,12 17,12" fill="none" stroke="#0038b8" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <p>✡️ Devora's Bat Mitzvah · January 30, 2027 ✡️</p>
+  <p style="font-size:13px; color:#9b7080; margin-top:10px; font-style:italic;">😅 "A simcha ohne shpilkes iz vi a kugel ohne raisins." · (A celebration without anxiety is like a kugel without raisins.)</p>
+</header>
+
+<div class="grid">
+
+  <div class="card full-width">
+    <div class="card-title">📊 RSVP Tracker <span style="font-size:12px; color:#7a8090; font-weight:400; font-family:Nunito,sans-serif;">(households)</span></div>
+    <div class="rsvp-grid">
+      <div class="rsvp-item">
+        <div class="rsvp-event">🕯️🕯️ Friday Shabbat Dinner</div>
+        <div class="rsvp-numbers">
+          <div class="rsvp-num yes"><div class="num">—</div><div class="label">Yes</div></div>
+          <div class="rsvp-num no"><div class="num">—</div><div class="label">No</div></div>
+          <div class="rsvp-num pending"><div class="num">87</div><div class="label">Pending</div></div>
+        </div>
+      </div>
+      <div class="rsvp-item">
+        <div class="rsvp-event">✡️ Saturday Service</div>
+        <div class="rsvp-numbers">
+          <div class="rsvp-num yes"><div class="num">—</div><div class="label">Yes</div></div>
+          <div class="rsvp-num no"><div class="num">—</div><div class="label">No</div></div>
+          <div class="rsvp-num pending"><div class="num">152</div><div class="label">Pending</div></div>
+        </div>
+      </div>
+      <div class="rsvp-item">
+        <div class="rsvp-event">🎉 Saturday Night Party</div>
+        <div class="rsvp-numbers">
+          <div class="rsvp-num yes"><div class="num">—</div><div class="label">Yes</div></div>
+          <div class="rsvp-num no"><div class="num">—</div><div class="label">No</div></div>
+          <div class="rsvp-num pending"><div class="num">131</div><div class="label">Pending</div></div>
+        </div>
+      </div>
+      <div class="rsvp-item">
+        <div class="rsvp-event">☀️ Sunday Farewell Brunch</div>
+        <div class="rsvp-numbers">
+          <div class="rsvp-num yes"><div class="num">—</div><div class="label">Yes</div></div>
+          <div class="rsvp-num no"><div class="num">—</div><div class="label">No</div></div>
+          <div class="rsvp-num pending"><div class="num">87</div><div class="label">Pending</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="edit-note">Update numbers as RSVPs come in · 152 people across 66 households · ⚠️ 8 households still need events assigned</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👥 Guest Summary</div>
+    <div class="guest-bar-wrap">
+      <div class="guest-bar-label"><span>Friends – Seren</span><span>41 households</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:64%"></div></div>
+      <div class="guest-bar-label"><span>Immediate Family</span><span>15 households</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:23%"></div></div>
+      <div class="guest-bar-label"><span>Friends – Mini</span><span>4 households</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:6%"></div></div>
+      <div class="guest-bar-label"><span>Extended Family</span><span>2 households</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:3%"></div></div>
+      <div class="guest-bar-label"><span>Community</span><span>1 household</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:1.5%"></div></div>
+      <div class="guest-bar-label"><span>Friends – Devorah</span><span>TBD</span></div>
+      <div class="guest-bar"><div class="guest-bar-fill" style="width:0%"></div></div>
+    </div>
+    <div style="text-align:center; margin-top:8px;">
+      <span style="font-size:28px; font-weight:800; color:#0038b8;">64</span>
+      <span style="font-size:13px; color:#7a8090; margin-left:6px;">households invited so far</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ To-Do List</div>
+    <ul class="todo-list">
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Research hotels for out of town guests</span><span class="todo-tag tag-urgent">Urgent</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Rate & recommend best hotels</span><span class="todo-tag tag-urgent">Urgent</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Find and contact caterers</span><span class="todo-tag tag-urgent">Urgent</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Finalize save the date design with Devora</span><span class="todo-tag tag-soon">Soon</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Send save the dates</span><span class="todo-tag tag-soon">Soon</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Book DJ / band</span><span class="todo-tag tag-soon">Soon</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Book photographer</span><span class="todo-tag tag-soon">Soon</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Fill in "Events Invited To" on guest list</span><span class="todo-tag tag-later">Later</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Build out-of-town guest info page</span><span class="todo-tag tag-later">Later</span></li>
+      <li onclick="toggleDone(this)"><input type="checkbox"><span>Design full invitation</span><span class="todo-tag tag-later">Later</span></li>
+    </ul>
+  </div>
+
+  <div class="card full-width">
+    <div class="card-title">📞 Vendors</div>
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-category">Venue – Service</div>
+        <div class="vendor-name">Agudas Achim Synagogue</div>
+        <div class="vendor-detail">Saturday · Austin, TX</div>
+        <span class="vendor-status status-booked">✓ Booked</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Caterer</div>
+        <div class="vendor-name tbd">Not yet booked</div>
+        <div class="vendor-detail">Research in progress</div>
+        <span class="vendor-status status-looking">🔍 Looking</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">DJ / MC / Dancers</div>
+        <div class="vendor-name">EZ Bar Mitzvahs</div>
+        <div class="vendor-detail">Cory Baum · 1-844-392-6552 · info@ezbmllc.com</div>
+        <span class="vendor-status status-booked">✓ Booked · Deposit paid</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Photographer</div>
+        <div class="vendor-name tbd">Not yet booked</div>
+        <div class="vendor-detail">—</div>
+        <span class="vendor-status status-tbd">TBD</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Florist</div>
+        <div class="vendor-name tbd">Not yet booked</div>
+        <div class="vendor-detail">—</div>
+        <span class="vendor-status status-tbd">TBD</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Friday Night Venue</div>
+        <div class="vendor-name tbd">Not yet booked</div>
+        <div class="vendor-detail">Shabbat Dinner location</div>
+        <span class="vendor-status status-tbd">TBD</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Party Venue</div>
+        <div class="vendor-name">Shalom Austin Community Hall</div>
+        <div class="vendor-detail">Leah Reed · leah.reed@shalomaustin.org · Jan 30 · 6–10pm</div>
+        <span class="vendor-status status-booked">✓ Booked · Deposit paid</span>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-category">Sunday Brunch Venue</div>
+        <div class="vendor-name tbd">Not yet booked</div>
+        <div class="vendor-detail">Farewell Brunch location</div>
+        <span class="vendor-status status-tbd">TBD</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card full-width">
+    <div class="card-title">📅 Key Dates</div>
+    <ul class="dates-list">
+      <li><div class="date-badge">NOW</div><div><div class="date-desc">Research hotels & caterers</div><div class="date-sub">Top priority this week</div></div></li>
+      <li><div class="date-badge">ASAP</div><div><div class="date-desc">Send Save the Dates</div><div class="date-sub">Once Devora approves the design</div></div></li>
+      <li><div class="date-badge">JAN 29</div><div><div class="date-desc">Friday Night Shabbat Dinner</div><div class="date-sub">Location TBD · Evening</div></div></li>
+      <li><div class="date-badge">JAN 30</div><div><div class="date-desc">🎉 Bat Mitzvah Day!</div><div class="date-sub">Agudas Achim Synagogue · Austin, TX</div></div></li>
+      <li><div class="date-badge">JAN 31</div><div><div class="date-desc">Sunday Farewell Brunch</div><div class="date-sub">Location TBD · Morning</div></div></li>
+      <li><div class="date-badge">14 שבט</div><div><div class="date-desc">14 Shevat 5787</div><div class="date-sub">Hebrew calendar date</div></div></li>
+    </ul>
+  </div>
+
+</div>
+
+<p class="last-updated">Dashboard last updated: June 2026 · Made with ❤️ for Devora's Bat Mitzvah</p>
+
+<script>
+  function toggleDone(li) {
+    const cb = li.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    li.classList.toggle('done', cb.checked);
+  }
+</script>
+</body>
+</html>
