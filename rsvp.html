@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSVP · Devora's Bat Mitzvah</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f0f4ff;
+    color: #1a2a4a;
+    min-height: 100vh;
+  }
+
+  /* Watermark */
+  .watermark-wrap {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .watermark { width: 70vw; max-width: 700px; opacity: 0.05; }
+
+  header {
+    background: linear-gradient(160deg, #e8f0ff 0%, #f0f4ff 50%, #fff8e8 100%);
+    padding: 40px 20px 30px;
+    text-align: center;
+    border-bottom: 2px solid #c9a84c;
+    position: relative; z-index: 1;
+  }
+
+  .flag-row { display: flex; align-items: center; justify-content: space-between; max-width: 420px; margin: 0 auto 14px; padding: 0 10px; }
+
+  .hebrew-name { font-family: 'Frank Ruhl Libre', serif; font-size: 28px; font-weight: 900; color: #0038b8; direction: rtl; letter-spacing: 2px; margin-bottom: 4px; }
+
+  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 7vw, 52px); font-weight: 700; color: #0038b8; text-shadow: 1px 1px 0 #c8d8f8; margin-bottom: 4px; }
+
+  header p { font-size: 14px; color: #c9920a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+
+  .date-pill { display: inline-block; background: white; border: 1.5px solid #c9a84c; border-radius: 20px; padding: 6px 20px; font-size: 13px; font-weight: 700; color: #0038b8; margin-top: 8px; }
+
+  /* Main form container */
+  .container { max-width: 680px; margin: 0 auto; padding: 30px 20px 60px; position: relative; z-index: 1; }
+
+  /* Step indicator */
+  .step-intro {
+    background: white; border-radius: 20px; padding: 28px;
+    border: 1.5px solid #c9a84c; margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,56,184,0.07);
+    text-align: center;
+  }
+  .step-intro h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: #0038b8; margin-bottom: 8px; }
+  .step-intro p { font-size: 14px; color: #7a8090; line-height: 1.6; }
+
+  /* Cards */
+  .card {
+    background: white; border-radius: 20px; padding: 24px 28px;
+    border: 1.5px solid #e0e8ff; margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,56,184,0.05);
+    display: none;
+  }
+  .card.active { display: block; animation: slideIn 0.3s ease; }
+  .card.always { display: block; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif; font-size: 18px; color: #0038b8;
+    margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid #e8f0ff;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* Form fields */
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 700; color: #2a4a8a; margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="number"] {
+    width: 100%; padding: 12px 16px; border: 1.5px solid #d0d8f0;
+    border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 15px;
+    color: #1a2a4a; background: #f8fafe; transition: border-color 0.2s;
+  }
+  .field input:focus { outline: none; border-color: #0038b8; background: white; }
+
+  /* Yes/No toggle */
+  .yn-toggle { display: flex; gap: 12px; }
+  .yn-btn {
+    flex: 1; padding: 12px; border: 2px solid #d0d8f0; border-radius: 12px;
+    background: #f8fafe; font-family: 'Nunito', sans-serif; font-size: 15px;
+    font-weight: 700; color: #7a8090; cursor: pointer; transition: all 0.2s;
+    text-align: center;
+  }
+  .yn-btn:hover { border-color: #0038b8; color: #0038b8; }
+  .yn-btn.selected-yes { background: #e8f5e9; border-color: #27ae60; color: #27ae60; }
+  .yn-btn.selected-no { background: #ffeaea; border-color: #e74c3c; color: #e74c3c; }
+
+  /* Dietary checkboxes */
+  .dietary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .diet-opt {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    border: 1.5px solid #d0d8f0; border-radius: 10px; cursor: pointer;
+    background: #f8fafe; transition: all 0.2s; font-size: 14px;
+  }
+  .diet-opt:hover { border-color: #0038b8; }
+  .diet-opt.selected { background: #e8f0ff; border-color: #0038b8; color: #0038b8; font-weight: 700; }
+  .diet-opt input { display: none; }
+
+  /* Sub-fields (shown when Yes selected) */
+  .sub-fields { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e8f0ff; display: none; }
+  .sub-fields.show { display: block; animation: slideIn 0.3s ease; }
+
+  /* Song request special styling */
+  .song-field { position: relative; }
+  .song-field input { padding-right: 50px; }
+  .song-note { font-size: 11px; color: #c9920a; margin-top: 4px; font-style: italic; }
+
+  /* Headcount */
+  .headcount-row { display: flex; align-items: center; gap: 12px; }
+  .headcount-row input { width: 80px; text-align: center; font-weight: 800; font-size: 18px; }
+  .headcount-row span { font-size: 13px; color: #7a8090; }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%; padding: 16px; background: linear-gradient(135deg, #0038b8, #1a5cd4);
+    color: white; border: none; border-radius: 16px; font-family: 'Nunito', sans-serif;
+    font-size: 17px; font-weight: 800; cursor: pointer; letter-spacing: 1px;
+    margin-top: 8px; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(0,56,184,0.3);
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,56,184,0.4); }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Confirmation screen */
+  #confirmation {
+    display: none; text-align: center; padding: 40px 20px;
+    position: relative; z-index: 1;
+  }
+  #confirmation.show { display: block; }
+  .confetti-wrap { font-size: 48px; margin-bottom: 16px; animation: bounce 0.6s ease infinite alternate; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+  #confirmation h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: #0038b8; margin-bottom: 8px; }
+  #confirmation p { font-size: 15px; color: #7a8090; margin-bottom: 20px; }
+
+  .confirmation-card {
+    background: white; border-radius: 20px; padding: 24px;
+    border: 1.5px solid #c9a84c; max-width: 500px; margin: 0 auto 20px;
+    text-align: left;
+  }
+  .confirmation-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f4ff; font-size: 14px; }
+  .confirmation-row:last-child { border-bottom: none; }
+  .conf-label { color: #7a8090; }
+  .conf-val { font-weight: 700; color: #1a2a4a; }
+  .conf-val.yes { color: #27ae60; }
+  .conf-val.no { color: #e74c3c; }
+
+  /* Song celebration */
+  #song-celebration {
+    display: none; background: #0a0a2a; border-radius: 20px;
+    padding: 20px; max-width: 500px; margin: 0 auto 20px;
+    text-align: center; animation: discoFlash 0.8s linear infinite;
+  }
+  @keyframes discoFlash {
+    0% { box-shadow: 0 0 20px #ff69b4; }
+    25% { box-shadow: 0 0 20px #60c0ff; }
+    50% { box-shadow: 0 0 20px #ffdd44; }
+    75% { box-shadow: 0 0 20px #44ff99; }
+    100% { box-shadow: 0 0 20px #ff69b4; }
+  }
+  #song-celebration.show { display: block; }
+  #song-celebration p { color: white; font-size: 14px; margin-bottom: 4px; }
+  #song-celebration .song-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #ffdd44; font-weight: 700; }
+
+  .back-link { display: block; text-align: center; margin-top: 16px; color: #0038b8; font-size: 13px; text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  /* Confetti particles */
+  .confetti-particle {
+    position: fixed; width: 10px; height: 10px; pointer-events: none;
+    z-index: 9999; animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Watermark -->
+<div class="watermark-wrap">
+  <svg class="watermark" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="100,15 165,120 35,120" fill="none" stroke="#0038b8" stroke-width="5"/>
+    <polygon points="100,185 165,80 35,80" fill="none" stroke="#0038b8" stroke-width="5"/>
+  </svg>
+</div>
+
+<header>
+  <div class="flag-row">
+    <svg width="54" height="36" viewBox="0 0 54 36" style="border-radius:3px; border:0.5px solid #bbb;">
+      <rect width="54" height="36" fill="white"/>
+      <rect y="5" width="54" height="6" fill="#0038b8"/>
+      <rect y="25" width="54" height="6" fill="#0038b8"/>
+      <polygon points="27,11 33,22 21,22" fill="none" stroke="#0038b8" stroke-width="1.5"/>
+      <polygon points="27,25 33,14 21,14" fill="none" stroke="#0038b8" stroke-width="1.5"/>
+    </svg>
+    <div>
+      <div class="hebrew-name">דברה דוד</div>
+      <h1>Devora David</h1>
+    </div>
+    <svg width="54" height="36" viewBox="0 0 54 36" style="border-radius:3px; border:0.5px solid #bbb;">
+      <rect width="54" height="36" fill="white"/>
+      <rect y="5" width="54" height="6" fill="#0038b8"/>
+      <rect y="25" width="54" height="6" fill="#0038b8"/>
+      <polygon points="27,11 33,22 21,22" fill="none" stroke="#0038b8" stroke-width="1.5"/>
+      <polygon points="27,25 33,14 21,14" fill="none" stroke="#0038b8" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <p>Bat Mitzvah Weekend · Austin, Texas</p>
+  <div class="date-pill">📅 January 29–31, 2027 · RSVP by December 1, 2026</div>
+</header>
+
+<!-- Main form -->
+<div class="container" id="formContainer">
+
+  <div class="step-intro">
+    <h2>You're invited! 🎉</h2>
+    <p>Please fill out one form per household. If you have any questions, contact Seren at <strong>770-876-2656</strong>.</p>
+  </div>
+
+  <form id="rsvpForm">
+
+    <!-- Contact info -->
+    <div class="card always">
+      <div class="card-title">👤 Your Details</div>
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="f_name" placeholder="e.g. Yussel McSchmaltzface" required/>
+      </div>
+      <div class="field">
+        <label>Email Address *</label>
+        <input type="email" id="f_email" placeholder="gefiltefish@yikes.com" required/>
+      </div>
+      <div class="field">
+        <label>Cell Phone *</label>
+        <input type="tel" id="f_phone" placeholder="1-800-HOT-KUGEL" required/>
+      </div>
+    </div>
+
+    <!-- Friday Shabbat Dinner -->
+    <div class="card always">
+      <div class="card-title">
+        <svg width="52" height="44" viewBox="0 0 52 44" style="flex-shrink:0;">
+          <ellipse cx="26" cy="28" rx="22" ry="10" fill="#c9a84c"/>
+          <ellipse cx="26" cy="22" rx="20" ry="8" fill="#e8c46a"/>
+          <ellipse cx="14" cy="20" rx="7" ry="6" fill="#d4a840"/>
+          <ellipse cx="26" cy="18" rx="7" ry="6" fill="#e8c46a"/>
+          <ellipse cx="38" cy="20" rx="7" ry="6" fill="#d4a840"/>
+          <ellipse cx="14" cy="18" rx="5" ry="4" fill="#f0d080"/>
+          <ellipse cx="26" cy="16" rx="5" ry="4" fill="#f0d080"/>
+          <ellipse cx="38" cy="18" rx="5" ry="4" fill="#f0d080"/>
+          <ellipse cx="18" cy="16" rx="1.5" ry="1" fill="#fff8e0" transform="rotate(20 18 16)"/>
+          <ellipse cx="26" cy="14" rx="1.5" ry="1" fill="#fff8e0" transform="rotate(-10 26 14)"/>
+          <ellipse cx="34" cy="16" rx="1.5" ry="1" fill="#fff8e0" transform="rotate(30 34 16)"/>
+          <ellipse cx="26" cy="34" rx="20" ry="6" fill="#f8f4e8"/>
+          <rect x="2" y="18" width="5" height="16" rx="2" fill="white" stroke="#e8d5b0" stroke-width="0.8"/>
+          <ellipse cx="4.5" cy="16" rx="2" ry="3" fill="#ffcc00"/>
+          <ellipse cx="4.5" cy="15" rx="1.2" ry="2" fill="#ff9900"/>
+          <rect x="45" y="18" width="5" height="16" rx="2" fill="white" stroke="#e8d5b0" stroke-width="0.8"/>
+          <ellipse cx="47.5" cy="16" rx="2" ry="3" fill="#ffcc00"/>
+          <ellipse cx="47.5" cy="15" rx="1.2" ry="2" fill="#ff9900"/>
+        </svg>
+        Friday Night Shabbat Dinner <span style="font-size:13px; color:#c9920a; font-family:Nunito,sans-serif; font-weight:600;">Jan 29</span>
+      </div>
+      <div class="field">
+        <label>Will you be attending?</label>
+        <div class="yn-toggle">
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'friday', true)">✅ Yes!</button>
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'friday', false)">❌ No</button>
+        </div>
+      </div>
+      <div class="sub-fields" id="friday-sub">
+        <div class="field">
+          <label>How many guests?</label>
+          <div class="headcount-row">
+            <input type="number" id="f_friday_count" min="1" max="20" value="1"/>
+            <span>people in your party</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Dietary restrictions</label>
+          <div class="dietary-grid" id="friday-diet">
+            <label class="diet-opt"><input type="checkbox" value="None"> 🍽️ None</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegetarian"> 🥗 Vegetarian</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
+            <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
+            <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
+            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saturday Kiddush -->
+    <div class="card always">
+      <div class="card-title">✡️ Saturday Service + Kiddush Luncheon <span style="font-size:13px; color:#c9920a; font-family:Nunito,sans-serif; font-weight:600;">Jan 30 · Morning</span></div>
+      <div class="field">
+        <label>Will you be attending?</label>
+        <div class="yn-toggle">
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'kiddush', true)">✅ Yes!</button>
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'kiddush', false)">❌ No</button>
+        </div>
+      </div>
+      <div class="sub-fields" id="kiddush-sub">
+        <div class="field">
+          <label>How many guests?</label>
+          <div class="headcount-row">
+            <input type="number" id="f_kiddush_count" min="1" max="20" value="1"/>
+            <span>people in your party</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Dietary restrictions</label>
+          <div class="dietary-grid" id="kiddush-diet">
+            <label class="diet-opt"><input type="checkbox" value="None"> 🍽️ None</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegetarian"> 🥗 Vegetarian</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
+            <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
+            <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
+            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saturday Night Party -->
+    <div class="card always">
+      <div class="card-title">🎉 Saturday Night Party <span style="font-size:13px; color:#c9920a; font-family:Nunito,sans-serif; font-weight:600;">Jan 30 · 6:30–10:30pm · Shalom Austin</span></div>
+      <div class="field">
+        <label>Will you be attending?</label>
+        <div class="yn-toggle">
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'party', true)">✅ Yes!</button>
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'party', false)">❌ No</button>
+        </div>
+      </div>
+      <div class="sub-fields" id="party-sub">
+        <div class="field">
+          <label>How many guests?</label>
+          <div class="headcount-row">
+            <input type="number" id="f_party_count" min="1" max="20" value="1"/>
+            <span>people in your party</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Dietary restrictions</label>
+          <div class="dietary-grid" id="party-diet">
+            <label class="diet-opt"><input type="checkbox" value="None"> 🍽️ None</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegetarian"> 🥗 Vegetarian</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
+            <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
+            <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
+            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>🎵 Song Request for the DJ!</label>
+          <div class="song-field">
+            <input type="text" id="f_song" placeholder="What song gets you on the dance floor? 🕺"/>
+          </div>
+          <div class="song-note">Devora's DJ will do his best — no guarantees on Nickelback 😂</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sunday Brunch -->
+    <div class="card always">
+      <div class="card-title">☀️ Sunday Farewell Brunch <span style="font-size:13px; color:#c9920a; font-family:Nunito,sans-serif; font-weight:600;">Jan 31 · Morning</span></div>
+      <div class="field">
+        <label>Will you be attending?</label>
+        <div class="yn-toggle">
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'brunch', true)">✅ Yes!</button>
+          <button type="button" class="yn-btn" onclick="toggleYN(this, 'brunch', false)">❌ No</button>
+        </div>
+      </div>
+      <div class="sub-fields" id="brunch-sub">
+        <div class="field">
+          <label>How many guests?</label>
+          <div class="headcount-row">
+            <input type="number" id="f_brunch_count" min="1" max="20" value="1"/>
+            <span>people in your party</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Dietary restrictions</label>
+          <div class="dietary-grid" id="brunch-diet">
+            <label class="diet-opt"><input type="checkbox" value="None"> 🍽️ None</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegetarian"> 🥗 Vegetarian</label>
+            <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
+            <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
+            <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
+            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="card always">
+      <div class="card-title">💬 Anything else?</div>
+      <div class="field">
+        <label>Notes or special requests</label>
+        <input type="text" id="f_notes" placeholder="Anything we should know? (optional)"/>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Send my RSVP 🎉</button>
+
+  </form>
+</div>
+
+<!-- Confirmation -->
+<div id="confirmation">
+  <div class="confetti-wrap">🎉✡️🎊</div>
+  <h2>You're on the list!</h2>
+  <p>Devora and her family can't wait to celebrate with you.</p>
+
+  <!-- Song celebration -->
+  <div id="song-celebration">
+    <p>🎵 The DJ has your song request:</p>
+    <div class="song-title" id="song-display"></div>
+    <p style="margin-top:8px; font-size:12px; opacity:0.7;">We'll do our best — no guarantees on Nickelback 😂</p>
+  </div>
+
+  <div class="confirmation-card" id="conf-card"></div>
+
+  <p style="font-size:13px; color:#7a8090;">Need to make changes? Text or call Seren at <strong>770-876-2656</strong></p>
+  <a href="/" class="back-link">← Back to devora2027.com</a>
+</div>
+
+<script>
+  const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSe7gnkFnvN0UbYwYFTPzpW-SNANqb89CbzJnFCvs4mX0NjIhQ/formResponse";
+
+  // Field IDs
+  const FIELDS = {
+    name:          "entry.1458323328",
+    email:         "entry.1489666323",
+    phone:         "entry.1207485989",
+    friday_yn:     "entry.631760743",
+    friday_count:  "entry.31231413",
+    friday_diet:   "entry.49255932",
+    kiddush_yn:    "entry.892216840",
+    kiddush_count: "entry.1608757112",
+    kiddush_diet:  "entry.1157867289",
+    party_yn:      "entry.904668377",
+    party_count:   "entry.199334236",
+    party_diet:    "entry.420399396",
+    song:          "entry.1326920239",
+    notes:         "entry.1075803867",
+    brunch_yn:     "entry.1737147446",
+    brunch_count:  "entry.159924271",
+    brunch_diet:   "entry.1691528900"
+  };
+
+  // Track yes/no state
+  const state = { friday: null, kiddush: null, party: null, brunch: null };
+
+  function toggleYN(btn, event, isYes) {
+    const siblings = btn.parentElement.querySelectorAll('.yn-btn');
+    siblings.forEach(b => b.classList.remove('selected-yes', 'selected-no'));
+    btn.classList.add(isYes ? 'selected-yes' : 'selected-no');
+    state[event] = isYes;
+    const sub = document.getElementById(event + '-sub');
+    if (isYes) { sub.classList.add('show'); }
+    else { sub.classList.remove('show'); }
+  }
+
+  // Dietary checkbox styling
+  document.querySelectorAll('.diet-opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+      this.classList.toggle('selected');
+      const cb = this.querySelector('input');
+      cb.checked = !cb.checked;
+    });
+  });
+
+  function getDiet(containerId) {
+    const checked = document.querySelectorAll('#' + containerId + ' input:checked');
+    return Array.from(checked).map(c => c.value).join(', ') || 'None';
+  }
+
+  function launchConfetti() {
+    const colors = ['#0038b8', '#c9a84c', '#ff69b4', '#44ff99', '#ff6b6b', '#60c0ff'];
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'confetti-particle';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (Math.random() * 8 + 6) + 'px';
+        el.style.height = (Math.random() * 8 + 6) + 'px';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+      }, i * 30);
+    }
+  }
+
+  document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('f_name').value.trim();
+    const email = document.getElementById('f_email').value.trim();
+    const phone = document.getElementById('f_phone').value.trim();
+    const song = document.getElementById('f_song').value.trim();
+    const notes = document.getElementById('f_notes').value.trim();
+
+    if (!name || !email || !phone) {
+      alert('Please fill in your name, email and phone number!');
+      return;
+    }
+
+    // Build form data
+    const fd = new FormData();
+    fd.append(FIELDS.name, name);
+    fd.append(FIELDS.email, email);
+    fd.append(FIELDS.phone, phone);
+
+    fd.append(FIELDS.friday_yn, state.friday === true ? 'Yes!' : state.friday === false ? 'No' : '');
+    if (state.friday) {
+      fd.append(FIELDS.friday_count, document.getElementById('f_friday_count').value);
+      getDiet('friday-diet').split(', ').forEach(d => fd.append(FIELDS.friday_diet, d));
+    }
+
+    fd.append(FIELDS.kiddush_yn, state.kiddush === true ? 'Yes!' : state.kiddush === false ? 'No' : '');
+    if (state.kiddush) {
+      fd.append(FIELDS.kiddush_count, document.getElementById('f_kiddush_count').value);
+      getDiet('kiddush-diet').split(', ').forEach(d => fd.append(FIELDS.kiddush_diet, d));
+    }
+
+    fd.append(FIELDS.party_yn, state.party === true ? 'Yes!' : state.party === false ? 'No' : 'Yes');
+    if (state.party) {
+      fd.append(FIELDS.party_count, document.getElementById('f_party_count').value);
+      getDiet('party-diet').split(', ').forEach(d => fd.append(FIELDS.party_diet, d));
+    }
+    if (song) fd.append(FIELDS.song, song);
+    if (notes) fd.append(FIELDS.notes, notes);
+
+    fd.append(FIELDS.brunch_yn, state.brunch === true ? 'Yes' : state.brunch === false ? 'No' : '');
+    if (state.brunch) {
+      fd.append(FIELDS.brunch_count, document.getElementById('f_brunch_count').value);
+      getDiet('brunch-diet').split(', ').forEach(d => fd.append(FIELDS.brunch_diet, d));
+    }
+
+    // Submit to Google Forms (no-cors)
+    fetch(FORM_ACTION, { method: 'POST', body: fd, mode: 'no-cors' });
+
+    // Show confirmation
+    document.getElementById('formContainer').style.display = 'none';
+    const conf = document.getElementById('confirmation');
+    conf.classList.add('show');
+
+    // Song celebration
+    if (song) {
+      document.getElementById('song-display').textContent = '🎵 ' + song;
+      document.getElementById('song-celebration').classList.add('show');
+    }
+
+    // Build confirmation summary
+    const confCard = document.getElementById('conf-card');
+    const eventsHTML = [
+      { label: '🕯️🕯️ Friday Shabbat Dinner', val: state.friday },
+      { label: '✡️ Saturday Service + Kiddush', val: state.kiddush },
+      { label: '🎉 Saturday Night Party', val: state.party },
+      { label: '☀️ Sunday Brunch', val: state.brunch },
+    ].map(ev => `
+      <div class="confirmation-row">
+        <span class="conf-label">${ev.label}</span>
+        <span class="conf-val ${ev.val === true ? 'yes' : ev.val === false ? 'no' : ''}">${ev.val === true ? '✅ Yes!' : ev.val === false ? '❌ No' : '—'}</span>
+      </div>
+    `).join('');
+
+    confCard.innerHTML = `
+      <div class="confirmation-row"><span class="conf-label">Name</span><span class="conf-val">${name}</span></div>
+      <div class="confirmation-row"><span class="conf-label">Email</span><span class="conf-val">${email}</span></div>
+      ${eventsHTML}
+      ${song ? `<div class="confirmation-row"><span class="conf-label">🎵 Song Request</span><span class="conf-val">${song}</span></div>` : ''}
+      ${notes ? `<div class="confirmation-row"><span class="conf-label">Notes</span><span class="conf-val">${notes}</span></div>` : ''}
+    `;
+
+    // Confetti!
+    launchConfetti();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
