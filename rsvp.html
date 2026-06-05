@@ -116,6 +116,48 @@
   .sub-fields { margin-top: 16px; padding-top: 16px; border-top: 1px solid #e8f0ff; display: none; }
   .sub-fields.show { display: block; animation: slideIn 0.3s ease; }
 
+
+  /* Dancing Rabbis Easter Egg */
+  #rabbi-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,30,0.88); z-index: 9999;
+    justify-content: center; align-items: center; flex-direction: column; gap: 16px;
+  }
+  #rabbi-overlay.show { display: flex; }
+  #rabbi-box {
+    background: #0a0a2a; border: 2px solid #c9a84c; border-radius: 24px;
+    padding: 24px 28px; text-align: center; max-width: 380px; width: 92%;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn { from { transform: scale(0.2) rotate(-10deg); opacity:0; } to { transform: scale(1) rotate(0deg); opacity:1; } }
+  #rabbi-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #c9a84c; margin: 8px 0 4px; }
+  #rabbi-box p { font-size: 13px; color: #aaa; margin-bottom: 12px; }
+  .rabbi-row { display: flex; justify-content: center; gap: 4px; margin: 8px 0; }
+  @keyframes rabbiSkate1 {
+    0%   { transform: translateX(0) rotate(-8deg) translateY(0); }
+    25%  { transform: translateX(4px) rotate(4deg) translateY(-10px); }
+    50%  { transform: translateX(0) rotate(-4deg) translateY(-4px); }
+    75%  { transform: translateX(-4px) rotate(8deg) translateY(-12px); }
+    100% { transform: translateX(0) rotate(-8deg) translateY(0); }
+  }
+  @keyframes rabbiSpin {
+    0%   { transform: rotate(0deg) translateY(0); }
+    25%  { transform: rotate(90deg) translateY(-8px); }
+    50%  { transform: rotate(180deg) translateY(0); }
+    75%  { transform: rotate(270deg) translateY(-8px); }
+    100% { transform: rotate(360deg) translateY(0); }
+  }
+  @keyframes rabbiKick {
+    0%, 100% { transform: rotate(6deg) translateY(0); }
+    30%  { transform: rotate(-10deg) translateY(-14px) scaleX(-1); }
+    60%  { transform: rotate(4deg) translateY(-6px); }
+  }
+  .close-rabbi {
+    background: #c9a84c; color: #0a0a2a; border: none; border-radius: 50px;
+    padding: 10px 28px; font-family: 'Nunito', sans-serif; font-weight: 800;
+    font-size: 14px; cursor: pointer; letter-spacing: 1px;
+  }
+
   /* Song request special styling */
   .song-field { position: relative; }
   .song-field input { padding-right: 50px; }
@@ -301,7 +343,6 @@
             <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
             <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
             <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
-            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
           </div>
         </div>
       </div>
@@ -333,7 +374,6 @@
             <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
             <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
             <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
-            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
           </div>
         </div>
       </div>
@@ -365,7 +405,6 @@
             <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
             <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
             <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
-            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
           </div>
         </div>
         <div class="field">
@@ -373,7 +412,7 @@
           <div class="song-field">
             <input type="text" id="f_song" placeholder="What song gets you on the dance floor? 🕺"/>
           </div>
-          <div class="song-note">Devora's DJ will do his best — no guarantees on Nickelback 😂</div>
+          <div class="song-note">We'll do our best. No promises on Hall and Oates.</div>
         </div>
       </div>
     </div>
@@ -404,7 +443,6 @@
             <label class="diet-opt"><input type="checkbox" value="Vegan"> 🌱 Vegan</label>
             <label class="diet-opt"><input type="checkbox" value="Gluten-free"> 🌾 Gluten-free</label>
             <label class="diet-opt"><input type="checkbox" value="Kosher"> ✡️ Kosher</label>
-            <label class="diet-opt"><input type="checkbox" value="Halal"> 🌙 Halal</label>
           </div>
         </div>
       </div>
@@ -434,7 +472,7 @@
   <div id="song-celebration">
     <p>🎵 The DJ has your song request:</p>
     <div class="song-title" id="song-display"></div>
-    <p style="margin-top:8px; font-size:12px; opacity:0.7;">We'll do our best — no guarantees on Nickelback 😂</p>
+    <p style="margin-top:8px; font-size:12px; opacity:0.7;">We'll do our best. No promises on Hall and Oates.</p>
   </div>
 
   <div class="confirmation-card" id="conf-card"></div>
@@ -479,6 +517,19 @@
     if (isYes) { sub.classList.add('show'); }
     else { sub.classList.remove('show'); }
   }
+
+
+  // Dancing rabbis trigger
+  let rabbiTimer;
+  document.getElementById('f_song').addEventListener('input', function() {
+    clearTimeout(rabbiTimer);
+    if (this.value.trim().length > 2) {
+      rabbiTimer = setTimeout(() => {
+        document.getElementById('rabbi-song-display').textContent = '"' + this.value.trim() + '"';
+        document.getElementById('rabbi-overlay').style.display = 'flex';
+      }, 1500);
+    }
+  });
 
   // Dietary checkbox styling
   document.querySelectorAll('.diet-opt').forEach(opt => {
@@ -599,5 +650,156 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
+
+<!-- Dancing Rabbis Easter Egg -->
+<div id="rabbi-overlay">
+  <div id="rabbi-box">
+    <div style="font-size:13px; color:#c9a84c; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px;">🎵 Song Request Received!</div>
+    <div class="rabbi-row">
+
+      <!-- Rabbi 1: skating left, arms up -->
+      <svg style="animation: rabbiSkate1 0.8s ease-in-out infinite;" width="75" height="120" viewBox="0 0 75 120">
+        <!-- Skates -->
+        <rect x="8" y="104" width="18" height="6" rx="3" fill="#c9a84c"/>
+        <circle cx="11" cy="111" r="3" fill="#555"/>
+        <circle cx="22" cy="111" r="3" fill="#555"/>
+        <rect x="44" y="104" width="18" height="6" rx="3" fill="#c9a84c"/>
+        <circle cx="47" cy="111" r="3" fill="#555"/>
+        <circle cx="58" cy="111" r="3" fill="#555"/>
+        <!-- Legs -->
+        <line x1="28" y1="84" x2="18" y2="106" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <line x1="47" y1="84" x2="55" y2="106" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <!-- Coat -->
+        <rect x="18" y="52" width="34" height="36" rx="6" fill="#1a1a1a"/>
+        <rect x="29" y="52" width="12" height="20" rx="2" fill="white"/>
+        <!-- Arms up dancing -->
+        <line x1="18" y1="62" x2="3" y2="44" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <line x1="52" y1="62" x2="68" y2="44" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="2" cy="42" r="5" fill="#f4d4a0"/>
+        <circle cx="69" cy="42" r="5" fill="#f4d4a0"/>
+        <!-- Head -->
+        <circle cx="35" cy="34" r="17" fill="#f4d4a0"/>
+        <!-- Hat -->
+        <rect x="17" y="10" width="36" height="6" rx="3" fill="#1a1a1a"/>
+        <rect x="21" y="4" width="28" height="10" rx="2" fill="#2a2a2a"/>
+        <!-- Payos -->
+        <path d="M19 32 Q12 42 16 50" fill="none" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M51 32 Q58 42 54 50" fill="none" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Beard -->
+        <ellipse cx="35" cy="44" rx="11" ry="9" fill="white"/>
+        <ellipse cx="28" cy="49" rx="6" ry="7" fill="white"/>
+        <ellipse cx="42" cy="49" rx="6" ry="7" fill="white"/>
+        <!-- Eyes -->
+        <circle cx="29" cy="31" r="2.5" fill="#333"/>
+        <circle cx="41" cy="31" r="2.5" fill="#333"/>
+        <circle cx="30" cy="30" r="1" fill="white"/>
+        <circle cx="42" cy="30" r="1" fill="white"/>
+        <!-- Big smile -->
+        <path d="M27 39 Q35 46 43 39" fill="none" stroke="#c47a50" stroke-width="2" stroke-linecap="round"/>
+        <!-- Speed lines -->
+        <line x1="0" y1="90" x2="10" y2="90" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+        <line x1="0" y1="95" x2="8" y2="95" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+      </svg>
+
+      <!-- Rabbi 2: center, spinning with Torah -->
+      <svg style="animation: rabbiSpin 1s linear infinite;" width="75" height="120" viewBox="0 0 75 120">
+        <!-- Skates -->
+        <rect x="8" y="104" width="18" height="6" rx="3" fill="#c9a84c"/>
+        <circle cx="11" cy="111" r="3" fill="#555"/>
+        <circle cx="22" cy="111" r="3" fill="#555"/>
+        <rect x="44" y="104" width="18" height="6" rx="3" fill="#c9a84c"/>
+        <circle cx="47" cy="111" r="3" fill="#555"/>
+        <circle cx="58" cy="111" r="3" fill="#555"/>
+        <!-- Legs kick -->
+        <line x1="30" y1="84" x2="14" y2="100" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <line x1="45" y1="84" x2="62" y2="100" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <!-- Coat -->
+        <rect x="17" y="52" width="36" height="36" rx="6" fill="#1a1a1a"/>
+        <rect x="28" y="52" width="14" height="22" rx="2" fill="white"/>
+        <!-- Holding Torah scroll! -->
+        <line x1="17" y1="60" x2="2" y2="50" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="1" cy="48" r="5" fill="#f4c2a1"/>
+        <!-- Torah -->
+        <rect x="-8" y="36" width="18" height="22" rx="2" fill="#fdf6e3" stroke="#e8d5a0" stroke-width="1"/>
+        <rect x="-10" y="34" width="4" height="26" rx="2" fill="#c9845a"/>
+        <rect x="8" y="34" width="4" height="26" rx="2" fill="#c9845a"/>
+        <line x1="-5" y1="42" x2="9" y2="42" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="-5" y1="47" x2="9" y2="47" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="-5" y1="52" x2="7" y2="52" stroke="#c9a84c" stroke-width="1"/>
+        <!-- Other arm up -->
+        <line x1="53" y1="60" x2="70" y2="44" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="71" cy="42" r="5" fill="#f4c2a1"/>
+        <!-- Head -->
+        <circle cx="37" cy="34" r="17" fill="#f4c2a1"/>
+        <!-- Hat -->
+        <rect x="19" y="10" width="36" height="6" rx="3" fill="#1a1a1a"/>
+        <rect x="23" y="4" width="28" height="10" rx="2" fill="#2a2a2a"/>
+        <!-- Payos -->
+        <path d="M21 32 Q14 42 18 50" fill="none" stroke="#6B4F14" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M53 32 Q60 42 56 50" fill="none" stroke="#6B4F14" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Big beard -->
+        <ellipse cx="37" cy="44" rx="12" ry="10" fill="#ddd"/>
+        <ellipse cx="29" cy="50" rx="7" ry="8" fill="#ddd"/>
+        <ellipse cx="45" cy="50" rx="7" ry="8" fill="#ddd"/>
+        <!-- Eyes -->
+        <circle cx="31" cy="31" r="2.5" fill="#333"/>
+        <circle cx="43" cy="31" r="2.5" fill="#333"/>
+        <circle cx="32" cy="30" r="1" fill="white"/>
+        <circle cx="44" cy="30" r="1" fill="white"/>
+        <!-- Smile -->
+        <path d="M29 39 Q37 47 45 39" fill="none" stroke="#c47a50" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Rabbi 3: one leg kicked up, arms wide -->
+      <svg style="animation: rabbiKick 0.6s ease-in-out infinite 0.15s;" width="75" height="120" viewBox="0 0 75 120">
+        <!-- Skates -->
+        <rect x="6" y="104" width="18" height="6" rx="3" fill="#c9a84c"/>
+        <circle cx="9" cy="111" r="3" fill="#555"/>
+        <circle cx="20" cy="111" r="3" fill="#555"/>
+        <!-- Kicked up leg with skate -->
+        <line x1="48" y1="84" x2="64" y2="68" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <rect x="60" y="62" width="16" height="6" rx="3" fill="#c9a84c" transform="rotate(-30 60 62)"/>
+        <circle cx="65" cy="60" r="3" fill="#555"/>
+        <!-- Standing leg -->
+        <line x1="30" y1="84" x2="16" y2="106" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <!-- Coat -->
+        <rect x="19" y="52" width="32" height="36" rx="6" fill="#1a1a1a"/>
+        <rect x="29" y="52" width="10" height="20" rx="2" fill="white"/>
+        <!-- Arms wide -->
+        <line x1="19" y1="62" x2="2" y2="52" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <line x1="51" y1="62" x2="70" y2="52" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="1" cy="50" r="5" fill="#f4d4a0"/>
+        <circle cx="71" cy="50" r="5" fill="#f4d4a0"/>
+        <!-- Head -->
+        <circle cx="35" cy="34" r="17" fill="#f4d4a0"/>
+        <!-- Hat -->
+        <rect x="17" y="10" width="36" height="6" rx="3" fill="#1a1a1a"/>
+        <rect x="21" y="4" width="28" height="10" rx="2" fill="#2a2a2a"/>
+        <!-- Payos -->
+        <path d="M19 32 Q12 42 16 50" fill="none" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M51 32 Q58 42 54 50" fill="none" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Beard -->
+        <ellipse cx="35" cy="44" rx="11" ry="9" fill="#eee"/>
+        <ellipse cx="28" cy="49" rx="6" ry="7" fill="#eee"/>
+        <ellipse cx="42" cy="49" rx="6" ry="7" fill="#eee"/>
+        <!-- Eyes - one winking! -->
+        <circle cx="29" cy="31" r="2.5" fill="#333"/>
+        <path d="M38 30 Q41 28 44 30" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="1" fill="white"/>
+        <!-- Smile -->
+        <path d="M27 39 Q35 47 43 39" fill="none" stroke="#c47a50" stroke-width="2" stroke-linecap="round"/>
+        <!-- Speed lines -->
+        <line x1="65" y1="88" x2="75" y2="88" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+        <line x1="67" y1="93" x2="75" y2="93" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+      </svg>
+
+    </div>
+    <h3>🎵 Mazel Tov!</h3>
+    <p id="rabbi-song-display" style="color:#c9a84c; font-weight:700; font-size:15px; margin:4px 0 8px;"></p>
+    <p>The relevant authorities approve 🕺</p>
+    <button class="close-rabbi" onclick="document.getElementById('rabbi-overlay').style.display='none'">Toda Raba! 🙏</button>
+  </div>
+</div>
+
 </body>
 </html>
