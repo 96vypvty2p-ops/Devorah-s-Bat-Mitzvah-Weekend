@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Out of Town · Devora's Bat Mitzvah</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0038B8;
+    --blue-mid: #3a52a0;
+    --blue-soft: #6a7fbb;
+    --blue-pale: #f4f6fd;
+    --blue-border: #d0d8f0;
+    --blue-light: #b0bfe8;
+    --navy: #0a1f6b;
+    --warm-gray: #eeecea;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Cormorant Garamond', serif; font-size: 18px; background: var(--warm-gray); color: var(--navy); min-height: 100vh; }
+  .site-header { background: #fff; border-bottom: 3px solid var(--blue); text-align: center; padding: 2rem 1.5rem 1.75rem; position: relative; overflow: hidden; }
+  .header-stripe { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #aabcee 0%, var(--blue) 40%, var(--blue) 60%, #aabcee 100%); }
+  .header-name { font-family: 'Playfair Display', serif; font-size: clamp(28px, 6vw, 42px); font-weight: 600; color: var(--navy); line-height: 1.1; margin-bottom: 0.2rem; }
+  .header-subtitle { font-size: 17px; font-style: italic; color: var(--blue-mid); }
+  nav { background: var(--blue); display: flex; justify-content: center; flex-wrap: wrap; }
+  nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 0.85rem 1.5rem; transition: background 0.2s, color 0.2s; font-family: 'Cormorant Garamond', serif; }
+  nav a:hover, nav a.active { background: rgba(255,255,255,0.15); color: #fff; }
+  main { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .page-title { display: flex; align-items: center; gap: 12px; margin-bottom: 0.5rem; }
+  .page-title-line { flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, var(--blue-light), transparent); }
+  .page-title-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+  .page-intro { text-align: center; font-size: 16px; font-style: italic; color: var(--blue-soft); margin-bottom: 2rem; line-height: 1.7; }
+  .info-card { background: #fff; border-radius: 12px; border: 1px solid var(--blue-border); padding: 1.5rem; margin-bottom: 1.25rem; }
+  .info-card p { font-size: 17px; color: var(--blue-mid); line-height: 1.85; font-style: italic; text-align: center; }
+  .info-card p strong { font-style: normal; color: var(--navy); }
+  .section-divider { display: flex; align-items: center; gap: 12px; margin: 2rem 0 1.5rem; }
+  .section-divider-line { flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, var(--blue-light), transparent); }
+  .section-divider-text { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue-mid); font-weight: 600; white-space: nowrap; }
+  .event-section { background: #fff; border-radius: 14px; border: 1px solid var(--blue-border); overflow: hidden; margin-bottom: 1.25rem; }
+  .event-section-header { background: var(--blue-pale); border-bottom: 1px solid var(--blue-border); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 12px; }
+  .event-section-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--navy); line-height: 1.2; }
+  .event-section-time { font-size: 13px; color: var(--blue-soft); font-style: italic; margin-top: 0.1rem; }
+  .event-section-body { padding: 1.25rem; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-mid); margin-bottom: 0.4rem; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea {
+    width: 100%; font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--navy);
+    background: #fff; border: 1px solid var(--blue-border); border-radius: 8px; padding: 0.7rem 1rem; outline: none; transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus { border-color: var(--blue); }
+  textarea { resize: vertical; min-height: 80px; }
+  .attend-toggle { display: flex; gap: 10px; }
+  .attend-btn { flex: 1; padding: 0.65rem; border: 1.5px solid var(--blue-border); border-radius: 8px; background: #fff; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--blue-mid); cursor: pointer; text-align: center; transition: all 0.15s; font-weight: 600; }
+  .attend-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .attend-btn.selected-yes { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .attend-btn.selected-no { background: #f0f0f0; color: #999; border-color: #ddd; }
+  .dietary-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .diet-chip { padding: 6px 14px; border: 1px solid var(--blue-border); border-radius: 20px; font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--blue-mid); background: #fff; cursor: pointer; transition: all 0.15s; }
+  .diet-chip:hover { border-color: var(--blue); }
+  .diet-chip.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .event-details { display: none; padding-top: 1rem; border-top: 0.5px solid var(--blue-border); margin-top: 1rem; }
+  .event-details.show { display: block; }
+  .submit-wrap { text-align: center; margin-top: 2rem; }
+  .submit-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 40px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: var(--navy); }
+  .contact-note { text-align: center; font-size: 15px; color: var(--blue-soft); font-style: italic; margin-top: 1.5rem; line-height: 1.7; }
+  #success-message { display: none; text-align: center; padding: 3rem 1.5rem; }
+  #success-message h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--navy); margin-bottom: 0.75rem; }
+  #success-message p { font-size: 18px; color: var(--blue-mid); font-style: italic; line-height: 1.8; }
+  footer { background: var(--blue); color: rgba(255,255,255,0.7); text-align: center; padding: 1.5rem; font-size: 15px; letter-spacing: 0.1em; font-family: 'Cormorant Garamond', serif; }
+  footer strong { color: #fff; }
+  @media (max-width: 480px) { nav a { padding: 0.75rem 1rem; font-size: 12px; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-stripe"></div>
+  <h1 class="header-name">Devora David</h1>
+  <p class="header-subtitle">Bat Mitzvah · January 30, 2027</p>
+</header>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="outoftown.html" class="active">Out of Town</a>
+  <a href="faq.html">FAQ</a>
+  <a href="rsvp.html">RSVP</a>
+</nav>
+<main>
+  <div id="oot-content">
+    <div class="page-title">
+      <div class="page-title-line"></div>
+      <span class="page-title-text">Out of Town Guests</span>
+      <div class="page-title-line"></div>
+    </div>
+    <p class="page-intro">So glad you're making the trip to Austin! Here's everything you need to know.</p>
+
+    <!-- HOTEL - PLACEHOLDER -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-text">Where to Stay</span>
+      <div class="section-divider-line"></div>
+    </div>
+    <div class="info-card">
+      <p>We have a room block reserved for guests at a nearby hotel.<br><strong>Hotel details and booking link coming soon!</strong><br>In the meantime, reach out to Seren or Babette with any questions.</p>
+    </div>
+
+    <!-- GETTING AROUND - PLACEHOLDER -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-text">Getting Around Austin</span>
+      <div class="section-divider-line"></div>
+    </div>
+    <div class="info-card">
+      <p>Austin is a driving city — we recommend renting a car or using Uber/Lyft.<br>The venue is at <strong>7300 Hart Lane, Austin, TX 78731</strong>.<br>More tips coming soon!</p>
+    </div>
+
+    <!-- THINGS TO DO - PLACEHOLDER -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-text">While You're in Austin</span>
+      <div class="section-divider-line"></div>
+    </div>
+    <div class="info-card">
+      <p>Austin has so much to offer — great food, live music, and beautiful parks.<br><strong>Our local recommendations coming soon!</strong></p>
+    </div>
+
+    <!-- OOT RSVP -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-text">RSVP · Friday & Sunday Events</span>
+      <div class="section-divider-line"></div>
+    </div>
+    <p class="page-intro" style="margin-bottom:1.5rem;">Please also RSVP for the <a href="rsvp.html" style="color:var(--blue);">Saturday events here</a>.</p>
+
+    <!-- YOUR DETAILS -->
+    <div class="event-section">
+      <div class="event-section-header">
+        <svg width="18" height="18" viewBox="0 0 100 100"><polygon points="50,8 92,75 8,75" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/><polygon points="50,92 8,25 92,25" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/></svg>
+        <div><p class="event-section-title">Your Details</p></div>
+      </div>
+      <div class="event-section-body">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="oot-name" placeholder="Your name" required>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Email *</label>
+          <input type="email" id="oot-email" placeholder="your@email.com" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHABBAT DINNER -->
+    <div class="event-section">
+      <div class="event-section-header">
+        <svg width="18" height="18" viewBox="0 0 100 100"><polygon points="50,8 92,75 8,75" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/><polygon points="50,92 8,25 92,25" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/></svg>
+        <div>
+          <p class="event-section-title">Shabbat Dinner</p>
+          <p class="event-section-time">Friday, January 29 · Evening</p>
+        </div>
+      </div>
+      <div class="event-section-body">
+        <div class="form-group">
+          <label>Will you be attending?</label>
+          <div class="attend-toggle">
+            <button class="attend-btn" onclick="toggleAttend(this, 'dinner-details', 'yes')">✓ Yes!</button>
+            <button class="attend-btn" onclick="toggleAttend(this, 'dinner-details', 'no')">✕ Can't make it</button>
+          </div>
+        </div>
+        <div class="event-details" id="dinner-details">
+          <div class="form-group">
+            <label>Number of guests</label>
+            <input type="number" id="dinner-guests" min="1" max="20" placeholder="2">
+          </div>
+          <div class="form-group">
+            <label>Dietary restrictions</label>
+            <div class="dietary-options">
+              <button class="diet-chip" onclick="toggleChip(this)">None</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Vegetarian</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Vegan</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Gluten-free</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Other</button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Allergies</label>
+            <input type="text" id="dinner-allergies" placeholder="e.g. peanuts, shellfish, dairy...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAREWELL BRUNCH -->
+    <div class="event-section">
+      <div class="event-section-header">
+        <svg width="18" height="18" viewBox="0 0 100 100"><polygon points="50,8 92,75 8,75" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/><polygon points="50,92 8,25 92,25" fill="none" stroke="#3a52a0" stroke-width="7" stroke-linejoin="round"/></svg>
+        <div>
+          <p class="event-section-title">Farewell Brunch</p>
+          <p class="event-section-time">Sunday, January 31 · Morning</p>
+        </div>
+      </div>
+      <div class="event-section-body">
+        <div class="form-group">
+          <label>Will you be attending?</label>
+          <div class="attend-toggle">
+            <button class="attend-btn" onclick="toggleAttend(this, 'brunch-details', 'yes')">✓ Yes!</button>
+            <button class="attend-btn" onclick="toggleAttend(this, 'brunch-details', 'no')">✕ Can't make it</button>
+          </div>
+        </div>
+        <div class="event-details" id="brunch-details">
+          <div class="form-group">
+            <label>Number of guests</label>
+            <input type="number" id="brunch-guests" min="1" max="20" placeholder="2">
+          </div>
+          <div class="form-group">
+            <label>Dietary restrictions</label>
+            <div class="dietary-options">
+              <button class="diet-chip" onclick="toggleChip(this)">None</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Vegetarian</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Vegan</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Gluten-free</button>
+              <button class="diet-chip" onclick="toggleChip(this)">Other</button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Allergies</label>
+            <input type="text" id="brunch-allergies" placeholder="e.g. peanuts, shellfish, dairy...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn" onclick="submitOOT()">Send my RSVP ✦</button>
+    </div>
+    <p class="contact-note">Questions? Reach out to Seren or Babette — we're happy to help!</p>
+  </div>
+
+  <div id="success-message">
+    <svg width="48" height="48" viewBox="0 0 100 100" style="margin: 0 auto 1.5rem; display:block;">
+      <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/>
+      <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/>
+    </svg>
+    <h2>Mazel Tov!</h2>
+    <p>You're on the list!<br>Don't forget to also <a href="rsvp.html" style="color:var(--blue); font-style:normal; font-weight:600;">RSVP for Saturday's events</a>.</p>
+    <p style="margin-top:1.5rem;"><a href="index.html" style="color:var(--blue); font-style:normal; font-weight:600;">← Back to devora2027.com</a></p>
+  </div>
+</main>
+<footer><strong>devora2027.com</strong> · Devora's Bat Mitzvah · January 30, 2027</footer>
+<script>
+function toggleAttend(btn, detailsId, val) {
+  btn.parentElement.querySelectorAll('.attend-btn').forEach(b => b.classList.remove('selected-yes','selected-no'));
+  btn.classList.add(val==='yes'?'selected-yes':'selected-no');
+  const d = document.getElementById(detailsId);
+  val==='yes' ? d.classList.add('show') : d.classList.remove('show');
+}
+function toggleChip(chip) { chip.classList.toggle('selected'); }
+function submitOOT() {
+  if (!document.getElementById('oot-name').value.trim()) { alert('Please enter your name before submitting.'); return; }
+  document.getElementById('oot-content').style.display='none';
+  document.getElementById('success-message').style.display='block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
