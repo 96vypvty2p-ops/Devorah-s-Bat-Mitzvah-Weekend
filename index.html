@@ -371,9 +371,9 @@
 
 <nav>
   <a href="#weekend">The Weekend</a>
-  <a href="#outoftown">Out of Town</a>
-  <a href="#faq">FAQ</a>
-  <a href="#rsvp">RSVP</a>
+  <a href="outoftown.html">Out of Town</a>
+  <a href="faq.html">FAQ</a>
+  <a href="rsvp.html">RSVP</a>
 </nav>
 
 <main>
@@ -427,29 +427,6 @@
     * You may know her as Devorah — for her Bat Mitzvah she's decided to drop the 'h' and use her legal name, Devora. She answers to both spellings <span>🙃</span>
   </div>
 
-  <!-- OUT OF TOWN -->
-  <div id="outoftown" class="section-label">
-    <div class="section-label-line"></div>
-    <span class="section-label-text">Out of Town Guests</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <div class="info-card">
-    <p>Traveling to Austin for the weekend? We've got you covered.<br>
-    Hotel recommendations, room blocks, and things to do coming soon!</p>
-  </div>
-
-  <!-- FAQ -->
-  <div id="faq" class="section-label">
-    <div class="section-label-line"></div>
-    <span class="section-label-text">FAQ</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <div class="info-card">
-    <p>Have questions? We'll have answers here soon.</p>
-  </div>
-
   <!-- RSVP -->
   <div id="rsvp" class="section-label">
     <div class="section-label-line"></div>
@@ -473,31 +450,41 @@
 </main>
 
 <footer>
-  <strong>devora2027.com</strong> · Devora David's Bat Mitzvah · January 30, 2027
+  <strong>devora2027.com</strong> · Devora's Bat Mitzvah · January 30, 2027
 </footer>
 
 <script>
 function downloadICS() {
-  const ics = [
+  const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//Devora Laibo Bat Mitzvah//EN',
     'BEGIN:VEVENT',
-    'SUMMARY:Devora Laibo\'s Bat Mitzvah Weekend',
-    'DTSTART;VALUE=DATE:20270129',
-    'DTEND;VALUE=DATE:20270201',
-    'DESCRIPTION:Join us as Devora Laibo becomes a Bat Mitzvah!\\nBat Mitzvah Service: Saturday\\, January 30\\nCelebration Party: Saturday evening\\, January 30\\n\\nPlanning travel? The celebration weekend runs January 29-31\\, 2027 in Austin\\, TX.',
+    'SUMMARY:Devora Laibo Bat Mitzvah Service',
+    'DTSTART;TZID=America/Chicago:20270130T100000',
+    'DTEND;TZID=America/Chicago:20270130T120000',
+    'LOCATION:Agudas Achim Synagogue\, 7300 Hart Lane\, Austin\, TX 78731',
+    'DESCRIPTION:Join us as Devora Laibo becomes a Bat Mitzvah!',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'SUMMARY:Devora Laibo Bat Mitzvah Celebration Party',
+    'DTSTART;TZID=America/Chicago:20270130T183000',
+    'DTEND;TZID=America/Chicago:20270130T223000',
+    'LOCATION:Shalom Austin Dell JCC\, 7300 Hart Lane\, Austin\, TX 78731',
+    'DESCRIPTION:Celebration Party for Devora Laibo Bat Mitzvah',
     'END:VEVENT',
     'END:VCALENDAR'
-  ].join('\r\n');
-  const blob = new Blob([ics], { type: 'text/calendar' });
+  ];
+  const icsContent = lines.join('\r\n');
+  const blob = new Blob([icsContent], { type: 'text/calendar' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = 'devora-laibo-bat-mitzvah-2027.ics';
   a.click();
   URL.revokeObjectURL(url);
-}
+}}
+
 
 // Smooth scroll for nav links
 document.querySelectorAll('nav a').forEach(a => {
