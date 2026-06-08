@@ -233,6 +233,14 @@
     margin-bottom: 0.5rem;
   }
 
+  .event-note {
+    font-size: 13px;
+    color: var(--blue-soft);
+    font-style: italic;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
   .event-magen {
     margin-top: 0.5rem;
   }
@@ -352,13 +360,13 @@
 <header class="site-header">
   <div class="header-stripe"></div>
   <p class="header-eyebrow">You're invited to celebrate</p>
-  <p class="header-hebrew">דבורה דוד</p>
-  <h1 class="header-name">Devora David</h1>
+  <p class="header-hebrew" onclick="tapHebrew()" style="cursor:default;">דבורה דוד</p>
+  <h1 class="header-name" onclick="tapName()" style="cursor:default;">Devora David</h1>
   <p class="header-subtitle">becoming a Bat Mitzvah</p>
 
   <div class="header-divider">
     <div class="header-divider-line"></div>
-    <svg class="magen-david" width="20" height="20" viewBox="0 0 100 100">
+    <svg class="magen-david" width="20" height="20" viewBox="0 0 100 100" onclick="brownieSlither()" style="cursor:pointer;">
       <polygon points="50,8 92,75 8,75" fill="none" stroke="#b0bfe8" stroke-width="6" stroke-linejoin="round"/>
       <polygon points="50,92 8,25 92,25" fill="none" stroke="#b0bfe8" stroke-width="6" stroke-linejoin="round"/>
     </svg>
@@ -390,7 +398,8 @@
       <div class="event-card-stripe"></div>
       <p class="event-day">Saturday · Jan 30</p>
       <p class="event-name">Bat Mitzvah Service</p>
-      <p class="event-time">Saturday morning</p>
+      <p class="event-time">Saturday morning · Agudas Achim Synagogue</p>
+      <p class="event-note">A Kiddush luncheon will follow in the synagogue.</p>
       <svg class="event-magen" width="16" height="16" viewBox="0 0 100 100">
         <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
         <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
@@ -467,6 +476,13 @@ function downloadICS() {
     'DESCRIPTION:Join us as Devora Laibo becomes a Bat Mitzvah!',
     'END:VEVENT',
     'BEGIN:VEVENT',
+    'SUMMARY:Devora Laibo Bat Mitzvah - Kiddush Luncheon',
+    'DTSTART;TZID=America/Chicago:20270130T120000',
+    'DTEND;TZID=America/Chicago:20270130T133000',
+    'LOCATION:Agudas Achim Synagogue\, 7300 Hart Lane\, Austin\, TX 78731',
+    'DESCRIPTION:Kiddush Luncheon following the Bat Mitzvah Service',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
     'SUMMARY:Devora Laibo Bat Mitzvah Celebration Party',
     'DTSTART;TZID=America/Chicago:20270130T183000',
     'DTEND;TZID=America/Chicago:20270130T223000',
@@ -496,6 +512,124 @@ document.querySelectorAll('nav a').forEach(a => {
     }
   });
 });
+</script>
+
+
+
+
+
+
+
+
+<!-- EASTER EGG OVERLAYS -->
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas" style="display:none; position:fixed; inset:0; pointer-events:none; z-index:9999;"></canvas>
+
+<!-- BROWNIE - emoji, head first, slow with stop -->
+<div id="brownie-container" style="display:none; position:fixed; bottom:80px; left:-320px; z-index:9999; pointer-events:none; white-space:nowrap;">
+  <div id="brownie-bubble" style="opacity:0; background:#FFD700; border:3px solid #cc9900; border-radius:18px; padding:16px 26px; font-family:'Playfair Display',serif; font-size:22px; color:#0a1f6b; font-style:italic; font-weight:600; box-shadow:0 8px 28px rgba(0,0,0,0.2); margin-bottom:8px; position:absolute; top:-95px; left:10px; white-space:nowrap;">
+    Brownie wishes Devora a big Mazel Tov! 🐍💙
+    <div style="position:absolute; bottom:-14px; left:30px; width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:14px solid #cc9900;"></div>
+  </div>
+  <div style="font-size:88px; line-height:1; display:inline-block; position:relative;">
+    🐍
+    <div style="position:absolute; top:-22px; left:10px; font-size:28px;">🎩</div>
+  </div>
+  <div style="font-size:60px; line-height:1; display:inline-block; margin-left:-10px; opacity:0.6;">〰️</div>
+  <div style="font-size:44px; line-height:1; display:inline-block; margin-left:-10px; opacity:0.3;">〰️</div>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay-bg" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:9998;"></div>
+
+<script>
+// ── CONFETTI on first visit only ────────────────────
+window.addEventListener('load', ()=>{
+  if (!sessionStorage.getItem('confetti_shown')) {
+    sessionStorage.setItem('confetti_shown','1');
+    setTimeout(launchConfetti, 700);
+  }
+});
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.style.display='block';
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const colors=['#0038B8','#aabcee','#FFD700','#ffffff','#001f6b','#FF0000','#6a7fbb'];
+  const pieces=Array.from({length:200},()=>({
+    x:Math.random()*canvas.width, y:-20,
+    r:Math.random()*10+5,
+    color:colors[Math.floor(Math.random()*colors.length)],
+    vx:(Math.random()-0.5)*6, vy:Math.random()*5+2,
+    angle:Math.random()*360, spin:(Math.random()-0.5)*8
+  }));
+  let frame=0;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.angle*Math.PI/180);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.5);
+      ctx.restore(); p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.vy+=0.07;
+    });
+    frame++;
+    if(frame<240) requestAnimationFrame(draw);
+    else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; }
+  }
+  draw();
+}
+
+// ── NAME TAP 3x → removed rabbis, just a little surprise ──
+let nameTaps=0, nameTimer;
+function tapName() {
+  nameTaps++;
+  clearTimeout(nameTimer);
+  nameTimer=setTimeout(()=>nameTaps=0, 1500);
+  if(nameTaps>=3) { nameTaps=0; launchConfetti(); }
+}
+
+// ── BROWNIE: slow, stops midway, then continues ─────
+function brownieSlither() {
+  const c=document.getElementById('brownie-container');
+  const b=document.getElementById('brownie-bubble');
+  const midX = Math.max(40, (window.innerWidth * 0.66) - 160);
+
+  c.style.display='block';
+  c.style.left='-320px';
+  c.style.transition='none';
+  b.style.opacity='0';
+
+  // Phase 1: slide in slowly to middle
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    c.style.transition='left 4s ease-out';
+    c.style.left = midX + 'px';
+  }));
+
+  // Phase 2: stop — show speech bubble
+  setTimeout(()=>{
+    b.style.transition='opacity 0.5s';
+    b.style.opacity='1';
+  }, 4100);
+
+  // Phase 3: pause so people can read
+  setTimeout(()=>{
+    b.style.transition='opacity 0.4s';
+    b.style.opacity='0';
+  }, 7500);
+
+  // Phase 4: continue off right side
+  setTimeout(()=>{
+    c.style.transition='left 3s ease-in';
+    c.style.left=(window.innerWidth+400)+'px';
+    setTimeout(()=>{ c.style.display='none'; c.style.left='-320px'; }, 3100);
+  }, 8000);
+}
+
+// ── CLOSE ALL ───────────────────────────────────────
+function closeAll() {
+  document.getElementById('overlay-bg').style.display='none';
+}
 </script>
 
 </body>
