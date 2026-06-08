@@ -292,7 +292,7 @@ function submitRSVP() {
 
 
 <!-- MP4 PARTY EASTER EGG -->
-<div id="party-video-overlay" style="display:none; position:fixed; inset:0; z-index:9999; display:none; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.75);" onclick="closePartyVideo()">
+<div id="party-video-overlay" style="display:none; position:fixed; inset:0; z-index:9999; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.75);" onclick="closePartyVideo()">
   <div style="text-align:center; pointer-events:none;">
     <div style="font-family:'Playfair Display',serif; font-size:clamp(18px,3.5vw,28px); color:#FFD700; font-style:italic; margin-bottom:0.75rem; text-shadow:0 2px 12px rgba(0,0,0,0.5); letter-spacing:0.02em;">Let's do this! 🎉</div>
     <video id="party-video" autoplay loop muted playsinline
@@ -309,6 +309,9 @@ function partyVideo() {
   const overlay = document.getElementById('party-video-overlay');
   const video = document.getElementById('party-video');
   overlay.style.display = 'flex';
+  overlay.style.flexDirection = 'column';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
   video.currentTime = 0;
   video.play();
 }
