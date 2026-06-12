@@ -27,7 +27,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   .site-header {
     background: #fff;
     border-bottom: 3px solid var(--blue);
@@ -91,9 +90,7 @@
     background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
   }
 
-  .magen-david {
-    flex-shrink: 0;
-  }
+  .magen-david { flex-shrink: 0; }
 
   .header-date {
     font-size: 17px;
@@ -116,7 +113,6 @@
     font-weight: 600;
   }
 
-  /* NAV */
   nav {
     background: var(--blue);
     display: flex;
@@ -142,14 +138,12 @@
     color: #fff;
   }
 
-  /* MAIN */
   main {
     max-width: 680px;
     margin: 0 auto;
     padding: 2.5rem 1.5rem 4rem;
   }
 
-  /* SECTION HEADERS */
   .section-label {
     display: flex;
     align-items: center;
@@ -173,7 +167,6 @@
     white-space: nowrap;
   }
 
-  /* WEEKEND AT A GLANCE */
   .event-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -242,9 +235,7 @@
     line-height: 1.5;
   }
 
-  .event-magen {
-    margin-top: 0.5rem;
-  }
+  .event-magen { margin-top: 0.5rem; }
 
   .oot-badge {
     display: inline-block;
@@ -259,7 +250,6 @@
     margin-top: 0.4rem;
   }
 
-  /* INFO CARD */
   .info-card {
     background: #fff;
     border-radius: 12px;
@@ -281,7 +271,6 @@
     color: var(--navy);
   }
 
-  /* CALENDAR BUTTON */
   .cal-wrap {
     text-align: center;
     margin: 1.5rem 0;
@@ -310,7 +299,6 @@
     color: #fff;
   }
 
-  /* DEVORAH NOTE */
   .devorah-note {
     background: var(--blue-pale);
     border-radius: 10px;
@@ -326,7 +314,6 @@
 
   .devorah-note span { font-style: normal; }
 
-  /* MORE DETAILS */
   .coming-soon {
     text-align: center;
     padding: 2rem 1rem;
@@ -337,7 +324,6 @@
     margin-top: 2rem;
   }
 
-  /* FOOTER */
   footer {
     background: var(--blue);
     color: rgba(255,255,255,0.7);
@@ -393,28 +379,32 @@
     <span class="section-label-text">The Weekend</span>
     <div class="section-label-line"></div>
   </div>
-<div class="event-grid">
-  <div class="event-card featured">
-  <div class="event-card-stripe"></div>
-  <p class="event-day">Saturday · Jan 30</p>
-  <p class="event-name">Bat Mitzvah Service</p>
-  <p class="event-time">Saturday morning · Agudas Achim Synagogue</p>
-  <svg class="event-magen" width="16" height="16" viewBox="0 0 100 100">
-    <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
-    <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
-  </svg>
-</div>
 
-<div class="event-card featured">
-  <div class="event-card-stripe"></div>
-  <p class="event-day">Saturday · Jan 30</p>
-  <p class="event-name">Kiddush Luncheon</p>
-  <p class="event-time">Following the service · Agudas Achim Synagogue</p>
-  <svg class="event-magen" width="16" height="16" viewBox="0 0 100 100">
-    <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
-    <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
-  </svg>
-<div class="event-card featured">
+  <div class="event-grid">
+
+    <div class="event-card featured">
+      <div class="event-card-stripe"></div>
+      <p class="event-day">Saturday · Jan 30</p>
+      <p class="event-name">Bat Mitzvah Service</p>
+      <p class="event-time">Saturday morning · Agudas Achim Synagogue</p>
+      <svg class="event-magen" width="16" height="16" viewBox="0 0 100 100">
+        <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
+        <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="event-card featured">
+      <div class="event-card-stripe"></div>
+      <p class="event-day">Saturday · Jan 30</p>
+      <p class="event-name">Kiddush Luncheon</p>
+      <p class="event-time">Following the service · Agudas Achim Synagogue</p>
+      <svg class="event-magen" width="16" height="16" viewBox="0 0 100 100">
+        <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
+        <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="event-card featured">
       <div class="event-card-stripe"></div>
       <p class="event-day">Saturday · Jan 30</p>
       <p class="event-name">Celebration Party</p>
@@ -424,8 +414,10 @@
         <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="7" stroke-linejoin="round"/>
       </svg>
     </div>
+
   </div>
-<div class="cal-wrap">
+
+  <div class="cal-wrap">
     <a class="cal-btn" href="#" onclick="downloadICS(); return false;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -480,21 +472,21 @@ function downloadICS() {
     'SUMMARY:Devora Laibo Bat Mitzvah Service',
     'DTSTART;TZID=America/Chicago:20270130T100000',
     'DTEND;TZID=America/Chicago:20270130T120000',
-    'LOCATION:Agudas Achim Synagogue\, 7300 Hart Lane\, Austin\, TX 78731',
+    'LOCATION:Agudas Achim Synagogue\\, 7300 Hart Lane\\, Austin\\, TX 78731',
     'DESCRIPTION:Join us as Devora Laibo becomes a Bat Mitzvah!',
     'END:VEVENT',
     'BEGIN:VEVENT',
     'SUMMARY:Devora Laibo Bat Mitzvah - Kiddush Luncheon',
     'DTSTART;TZID=America/Chicago:20270130T120000',
     'DTEND;TZID=America/Chicago:20270130T133000',
-    'LOCATION:Agudas Achim Synagogue\, 7300 Hart Lane\, Austin\, TX 78731',
+    'LOCATION:Agudas Achim Synagogue\\, 7300 Hart Lane\\, Austin\\, TX 78731',
     'DESCRIPTION:Kiddush Luncheon following the Bat Mitzvah Service',
     'END:VEVENT',
     'BEGIN:VEVENT',
     'SUMMARY:Devora Laibo Bat Mitzvah Celebration Party',
     'DTSTART;TZID=America/Chicago:20270130T183000',
     'DTEND;TZID=America/Chicago:20270130T223000',
-    'LOCATION:Shalom Austin Dell JCC\, 7300 Hart Lane\, Austin\, TX 78731',
+    'LOCATION:Shalom Austin Dell JCC\\, 7300 Hart Lane\\, Austin\\, TX 78731',
     'DESCRIPTION:Celebration Party for Devora Laibo Bat Mitzvah',
     'END:VEVENT',
     'END:VCALENDAR'
@@ -507,10 +499,8 @@ function downloadICS() {
   a.download = 'devora-laibo-bat-mitzvah-2027.ics';
   a.click();
   URL.revokeObjectURL(url);
-}}
+}
 
-
-// Smooth scroll for nav links
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     const href = a.getAttribute('href');
@@ -522,22 +512,13 @@ document.querySelectorAll('nav a').forEach(a => {
 });
 </script>
 
-
-
-
-
-
-
-
 <!-- EASTER EGG OVERLAYS -->
-
-<!-- CONFETTI CANVAS -->
 <canvas id="confetti-canvas" style="display:none; position:fixed; inset:0; pointer-events:none; z-index:9999;"></canvas>
 
 <!-- BROWNIE - emoji, head first, slow with stop -->
 <div id="brownie-container" style="display:none; position:fixed; bottom:80px; left:-320px; z-index:9999; pointer-events:none; white-space:nowrap;">
   <div id="brownie-bubble" style="opacity:0; background:#FFD700; border:3px solid #cc9900; border-radius:18px; padding:16px 20px; font-family:'Playfair Display',serif; font-size:18px; color:#0a1f6b; font-style:italic; font-weight:600; box-shadow:0 8px 28px rgba(0,0,0,0.2); margin-bottom:8px; position:absolute; top:-95px; left:10px; white-space:normal; width:220px; text-align:center; box-sizing:border-box;">
-    Brownie wishes Devora a big mazel tov! 🐍💙
+    Brownie wishes Devora a big Mazel Tov! 🐍💙
     <div style="position:absolute; bottom:-14px; left:30px; width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:14px solid #cc9900;"></div>
   </div>
   <div style="font-size:88px; line-height:1; display:inline-block; position:relative;">
@@ -548,11 +529,9 @@ document.querySelectorAll('nav a').forEach(a => {
   <div style="font-size:44px; line-height:1; display:inline-block; margin-left:-10px; opacity:0.3;">〰️</div>
 </div>
 
-<!-- OVERLAY -->
 <div id="overlay-bg" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:9998;"></div>
 
 <script>
-// ── CONFETTI on first visit only ────────────────────
 window.addEventListener('load', ()=>{
   if (!sessionStorage.getItem('confetti_shown')) {
     sessionStorage.setItem('confetti_shown','1');
@@ -588,7 +567,6 @@ function launchConfetti() {
   draw();
 }
 
-// ── NAME TAP 3x → removed rabbis, just a little surprise ──
 let nameTaps=0, nameTimer;
 function tapName() {
   nameTaps++;
@@ -597,36 +575,20 @@ function tapName() {
   if(nameTaps>=3) { nameTaps=0; launchConfetti(); }
 }
 
-// ── BROWNIE: slow, stops midway, then continues ─────
 function brownieSlither() {
   const c=document.getElementById('brownie-container');
   const b=document.getElementById('brownie-bubble');
   const midX = Math.max(40, (window.innerWidth * 0.66) - 160);
-
   c.style.display='block';
   c.style.left='-320px';
   c.style.transition='none';
   b.style.opacity='0';
-
-  // Phase 1: slide in slowly to middle
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     c.style.transition='left 4s ease-out';
     c.style.left = midX + 'px';
   }));
-
-  // Phase 2: stop — show speech bubble
-  setTimeout(()=>{
-    b.style.transition='opacity 0.5s';
-    b.style.opacity='1';
-  }, 4100);
-
-  // Phase 3: pause so people can read
-  setTimeout(()=>{
-    b.style.transition='opacity 0.4s';
-    b.style.opacity='0';
-  }, 7500);
-
-  // Phase 4: continue off right side
+  setTimeout(()=>{ b.style.transition='opacity 0.5s'; b.style.opacity='1'; }, 4100);
+  setTimeout(()=>{ b.style.transition='opacity 0.4s'; b.style.opacity='0'; }, 7500);
   setTimeout(()=>{
     c.style.transition='left 3s ease-in';
     c.style.left=(window.innerWidth+400)+'px';
@@ -634,7 +596,6 @@ function brownieSlither() {
   }, 8000);
 }
 
-// ── CLOSE ALL ───────────────────────────────────────
 function closeAll() {
   document.getElementById('overlay-bg').style.display='none';
 }
