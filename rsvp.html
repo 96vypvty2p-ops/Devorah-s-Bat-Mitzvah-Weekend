@@ -443,6 +443,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') lookupGuest();
   });
 });
+
+// ── VENUE EASTER EGG: animals driving ───────────────
+function venueEasterEgg() {
+  const existing = document.getElementById('animals-overlay');
+  if (existing) { existing.remove(); return; }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'animals-overlay';
+  overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:flex; align-items:center; justify-content:center; cursor:pointer;';
+
+  const video = document.createElement('video');
+  video.src = 'animals driving.mp4';
+  video.autoplay = true;
+  video.loop = true;
+  video.muted = false;
+  video.controls = false;
+  video.style.cssText = 'max-width:90vw; max-height:85vh; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.5);';
+
+  const close = document.createElement('div');
+  close.innerHTML = '✕';
+  close.style.cssText = 'position:absolute; top:20px; right:28px; color:#fff; font-size:28px; cursor:pointer; font-family:sans-serif; opacity:0.8;';
+  close.onclick = () => overlay.remove();
+
+  overlay.appendChild(video);
+  overlay.appendChild(close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
 </script>
 </body>
 </html>
