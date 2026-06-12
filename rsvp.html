@@ -245,14 +245,14 @@
         <svg width="18" height="18" viewBox="0 0 100 100"><polygon points="50,8 92,75 8,75" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="7" stroke-linejoin="round"/><polygon points="50,92 8,25 92,25" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="7" stroke-linejoin="round"/></svg>
         <div>
           <p class="event-section-title">Celebration Party</p>
-          <p class="event-section-time">Saturday evening · 6:30–10:30pm · <span id="venue-trigger" onclick="venueEasterEgg()" style="cursor:pointer; border-bottom:1px dashed rgba(255,255,255,0.5);">Shalom Austin Dell JCC</span></p>
+          <p class="event-section-time">Saturday evening · 6:30–10:30pm · Shalom Austin Dell JCC</p>
         </div>
       </div>
       <div class="event-section-body">
         <div class="form-group">
           <label>Will you be attending?</label>
           <div class="attend-toggle">
-            <button class="attend-btn" onclick="toggleAttend(this, 'party-details', 'yes')">✓ Yes!</button>
+            <button class="attend-btn" onclick="toggleAttend(this, 'party-details', 'yes'); venueEasterEgg();">✓ Yes!</button>
             <button class="attend-btn" onclick="toggleAttend(this, 'party-details', 'no')">✕ Can't make it</button>
           </div>
         </div>
@@ -454,7 +454,7 @@ function venueEasterEgg() {
   overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; display:flex; align-items:center; justify-content:center; cursor:pointer;';
 
   const video = document.createElement('video');
-  video.src = 'animals driving.mp4';
+  video.src = 'animals-driving.mp4';
   video.autoplay = true;
   video.loop = true;
   video.muted = false;
