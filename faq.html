@@ -27,7 +27,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   .site-header {
     background: #fff;
     border-bottom: 3px solid var(--blue);
@@ -59,7 +58,6 @@
     color: var(--blue-mid);
   }
 
-  /* NAV */
   nav {
     background: var(--blue);
     display: flex;
@@ -85,14 +83,12 @@
     color: #fff;
   }
 
-  /* MAIN */
   main {
     max-width: 680px;
     margin: 0 auto;
     padding: 2.5rem 1.5rem 4rem;
   }
 
-  /* PAGE TITLE */
   .page-title {
     display: flex;
     align-items: center;
@@ -114,7 +110,6 @@
     white-space: nowrap;
   }
 
-  /* FAQ */
   .faq-list {
     display: flex;
     flex-direction: column;
@@ -174,7 +169,6 @@
 
   .faq-a.open { display: block; }
 
-  /* FOOTER */
   footer {
     background: var(--blue);
     color: rgba(255,255,255,0.7);
@@ -220,55 +214,10 @@
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFAQ(this)">
-        What is a Bat Mitzvah? <span class="faq-arrow">↓</span>
-      </button>
-      <div class="faq-a">
-        <p>A Bat Mitzvah (literally "daughter of the commandment") is a Jewish coming-of-age ceremony marking the moment a 13-year-old girl becomes a full adult member of the Jewish community. During the Saturday morning service, Devora will lead prayers, chant from the Torah in Hebrew, and deliver a speech reflecting on its meaning. It's a milestone that's been years in the making — and we're so glad you'll be there to celebrate!</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFAQ(this)">
-        What should I wear? <span class="faq-arrow">↓</span>
-      </button>
-      <div class="faq-a">
-        <p>For the <strong>Saturday morning service</strong>, think synagogue-appropriate: dressy casual to cocktail attire. Covered shoulders and knees is a respectful guideline (though not strictly required). For the <strong>Saturday evening party</strong>, dress it up — cocktail attire is perfect. Have fun with it!</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFAQ(this)">
-        I've never been to a synagogue before. What should I expect? <span class="faq-arrow">↓</span>
-      </button>
-      <div class="faq-a">
-        <p>Welcome! You don't need any prior knowledge — just come as you are. The service is conducted in a mix of Hebrew and English, and prayer books with transliterations and translations will be available. You're welcome to participate as much or as little as feels comfortable. The congregation is warm and inclusive, and we're so glad to share this tradition with you.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFAQ(this)">
-        How long is the Saturday morning service? <span class="faq-arrow">↓</span>
-      </button>
-      <div class="faq-a">
-        <p>The service typically runs about two hours. We'll share the exact start time closer to the date — stay tuned!</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFAQ(this)">
         Are kids welcome? <span class="faq-arrow">↓</span>
       </button>
       <div class="faq-a">
-        <p>Children are warmly welcome at both the Saturday morning Bat Mitzvah service and the Saturday evening celebration party! We love having little ones be part of the simcha. Please include them on your RSVP so we can plan accordingly.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFAQ(this)">
-        What about gifts? <span class="faq-arrow">↓</span>
-      </button>
-      <div class="faq-a">
-        <p>Monetary gifts are the most common and appreciated tradition at a Bat Mitzvah — it's the norm in Jewish culture worldwide. Cash is always welcome, and Venmo is easy and convenient (<strong>@[DevораHandle]</strong> — coming soon!). Contributions to a Jewish organization in Devora's honor are also a meaningful option. A gift registry will be shared closer to the date.</p>
+        <p>Kids are invited to everything!</p>
       </div>
     </div>
 
@@ -313,7 +262,7 @@
 </main>
 
 <footer>
-  <strong>devora2027.com</strong> · Devora's Bat Mitzvah · January 30, 2027
+  <strong>devorah2027.com</strong> · Devora's Bat Mitzvah · January 30, 2027
 </footer>
 
 <script>
@@ -330,7 +279,6 @@ function toggleFAQ(btn) {
   }
 }
 
-// Smooth scroll
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     const href = a.getAttribute('href');
