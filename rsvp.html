@@ -359,6 +359,12 @@
     <h2>Mazel Tov!</h2>
     <p>You're on the list.<br>Devora and her family can't wait to celebrate with you!</p>
     <p id="song-confirm" style="display:none; margin-top:1rem; font-size:15px; color:var(--blue-soft);">🎵 The DJ has your song request — no promises, but they'll try!</p>
+    <div id="cal-btn-wrap" style="display:none; margin-top:1.5rem;">
+      <button onclick="downloadPersonalizedICS()" style="display:inline-flex; align-items:center; gap:8px; padding:11px 24px; border:1.5px solid var(--blue); border-radius:8px; background:#fff; color:var(--blue); font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+        Add my events to calendar
+      </button>
+    </div>
   </div>
 </main>
 
@@ -431,10 +437,63 @@ function submitRSVP() {
     alert('Please enter your name and email before submitting.');
     return;
   }
+
+  // Build personalized ICS based on RSVP responses
+  window._rsvpEvents = [];
+
+  const fridayYes = document.querySelector('#friday-section .attend-btn.selected-yes');
+  const kiddushYes = document.querySelector('#kiddush-details')?.classList.contains('show');
+  const partyYes = document.querySelector('#party-details')?.classList.contains('show');
+  const brunchYes = document.querySelector('#brunch-section .attend-btn.selected-yes') ||
+                    document.querySelector('#brunch-details')?.classList.contains('show');
+
+  if (fridayYes) window._rsvpEvents.push('friday');
+  if (kiddushYes) window._rsvpEvents.push('kiddush');
+  if (partyYes) window._rsvpEvents.push('party');
+  if (brunchYes) window._rsvpEvents.push('brunch');
+
   document.getElementById('rsvp-form').style.display = 'none';
   document.getElementById('success-message').style.display = 'block';
   const song = document.getElementById('song').value.trim();
   if (song) document.getElementById('song-confirm').style.display = 'block';
+  if (window._rsvpEvents.length > 0) document.getElementById('cal-btn-wrap').style.display = 'block';
+}
+
+function downloadPersonalizedICS() {
+  const events = window._rsvpEvents || [];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Devora Laibo Bat Mitzvah//EN'];
+
+  if (events.includes('friday')) {
+    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Shabbat Dinner',
+      'DTSTART;TZID=America/Chicago:20270129T183000','DTEND;TZID=America/Chicago:20270129T210000',
+      'LOCATION:Austin\\, TX','DESCRIPTION:Shabbat Dinner for Devora Laibo Bat Mitzvah','END:VEVENT');
+  }
+  if (events.includes('kiddush')) {
+    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Kiddush Luncheon',
+      'DTSTART;TZID=America/Chicago:20270130T120000','DTEND;TZID=America/Chicago:20270130T133000',
+      'LOCATION:Agudas Achim Synagogue\\, 7300 Hart Lane\\, Austin\\, TX 78731',
+      'DESCRIPTION:Kiddush Luncheon following the Bat Mitzvah Service','END:VEVENT');
+  }
+  if (events.includes('party')) {
+    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Celebration Party',
+      'DTSTART;TZID=America/Chicago:20270130T183000','DTEND;TZID=America/Chicago:20270130T223000',
+      'LOCATION:Shalom Austin Dell JCC\\, 7300 Hart Lane\\, Austin\\, TX 78731',
+      'DESCRIPTION:Celebration Party for Devora Laibo Bat Mitzvah','END:VEVENT');
+  }
+  if (events.includes('brunch')) {
+    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Farewell Brunch',
+      'DTSTART;TZID=America/Chicago:20270201T100000','DTEND;TZID=America/Chicago:20270201T120000',
+      'LOCATION:Austin\\, TX','DESCRIPTION:Farewell Brunch for Devora Laibo Bat Mitzvah','END:VEVENT');
+  }
+
+  lines.push('END:VCALENDAR');
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'devora-bat-mitzvah-my-events.ics';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // Allow pressing Enter in the lookup field
