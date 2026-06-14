@@ -362,11 +362,20 @@
     <h2>Mazel Tov!</h2>
     <p>You're on the list.<br>Devora and her family can't wait to celebrate with you!</p>
     <p id="song-confirm" style="display:none; margin-top:1rem; font-size:15px; color:var(--blue-soft);">🎵 The DJ has your song request — no promises, but they'll try!</p>
-    <div id="disco-cats-wrap" style="display:none; margin-top:1.25rem; position:relative;">
-      <video id="disco-cats-video" src="disco-cats-driving.mp4" autoplay loop muted playsinline
-        style="width:200px; height:200px; object-fit:cover; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,0.15);"></video>
-      <button id="unmute-btn" onclick="toggleMute()" style="position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:20px; padding:5px 12px; font-family:'Cormorant Garamond',serif; font-size:15px; cursor:pointer;">🔇 unmute</button>
+    <div id="disco-cats-wrap" style="display:none; margin-top:1.25rem;">
+      <button onclick="openDiscoCatsModal()" style="display:inline-flex; align-items:center; gap:10px; padding:12px 28px; background:var(--blue); color:#fff; border:none; border-radius:10px; font-family:'Playfair Display',serif; font-size:18px; font-weight:600; cursor:pointer;">
+        🎉 Watch a surprise!
+      </button>
     </div>
+
+<!-- Disco Cats Lightbox -->
+<div id="disco-cats-modal" onclick="closeDiscoCatsModal(event)" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center; cursor:pointer;">
+  <span onclick="closeDiscoCatsModal(event)" style="position:absolute; top:18px; right:24px; color:#fff; font-size:2rem; font-weight:700; cursor:pointer; user-select:none; opacity:0.85;">✕</span>
+  <video id="disco-cats-video" src="disco-cats-driving.mp4" loop muted playsinline
+    onclick="event.stopPropagation()"
+    style="max-width:92vw; max-height:88vh; border-radius:10px; cursor:default;"></video>
+  <button id="unmute-btn" onclick="toggleMute(event)" style="position:absolute; bottom:24px; right:24px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.35); color:#fff; font-family:'Cormorant Garamond',serif; font-size:15px; padding:6px 14px; border-radius:20px; cursor:pointer;">🔇 unmute</button>
+</div>
     <div id="cal-btn-wrap" style="display:none; margin-top:1.5rem;">
       <button onclick="downloadPersonalizedICS()" style="display:inline-flex; align-items:center; gap:8px; padding:11px 24px; border:1.5px solid var(--blue); border-radius:8px; background:#fff; color:var(--blue); font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
@@ -470,7 +479,27 @@ function submitRSVP() {
   if (window._rsvpEvents.length > 0) document.getElementById('cal-btn-wrap').style.display = 'block';
 }
 
-function toggleMute() {
+function openDiscoCatsModal() {
+  const modal = document.getElementById('disco-cats-modal');
+  const video = document.getElementById('disco-cats-video');
+  modal.style.display = 'flex';
+  video.currentTime = 0;
+  video.play();
+}
+
+function closeDiscoCatsModal(e) {
+  if (e && e.target === document.getElementById('disco-cats-video')) return;
+  const modal = document.getElementById('disco-cats-modal');
+  const video = document.getElementById('disco-cats-video');
+  modal.style.display = 'none';
+  video.pause();
+  video.currentTime = 0;
+  video.muted = true;
+  document.getElementById('unmute-btn').textContent = '🔇 unmute';
+}
+
+function toggleMute(e) {
+  if (e) e.stopPropagation();
   const video = document.getElementById('disco-cats-video');
   const btn = document.getElementById('unmute-btn');
   video.muted = !video.muted;
@@ -519,6 +548,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('lookup-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') lookupGuest();
   });
+});
+
+// Close disco cats modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('disco-cats-modal');
+    if (modal && modal.style.display === 'flex') closeDiscoCatsModal(e);
+  }
 });
 
 // ── VENUE EASTER EGG: animals driving ───────────────
