@@ -391,6 +391,7 @@
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkxvxewEB8eDhCWVKyVxD_h-AaUdv_6FEttFPVvVLapP61Or3FnyCO6g36kJp6p7p5vQ/exec';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby5diV_j3HDtQ-cJDhmdugXrTnR8E1nemr8tNPrFnY9RypRyps0xD1VdexZ3HfIb-ydXQ/exec';
 
 let lookupDone = false;
 
@@ -469,6 +470,32 @@ function submitRSVP() {
   if (partyYes) window._rsvpEvents.push('party');
   if (brunchYes) window._rsvpEvents.push('brunch');
 
+  // Gather form data for backend
+  const payload = {
+    form_type: 'rsvp',
+    name: name,
+    email: email,
+    phone: (document.getElementById('phone') || {}).value || '',
+    hotel_needed: (() => { const b = document.querySelector('.hotel-toggle .attend-btn.selected-yes, .hotel-toggle .attend-btn.selected-no'); return b ? b.textContent.trim() : ''; })(),
+    kiddush_attending: kiddushYes ? 'Yes' : 'No',
+    kiddush_guests: (document.getElementById('kiddush-guests') || {}).value || '',
+    kiddush_diet: (() => { const el = document.querySelector('#kiddush-details .dietary-options'); return el ? Array.from(el.querySelectorAll('.diet-chip.selected')).map(c => c.textContent).join(', ') : ''; })(),
+    kiddush_allergies: (document.getElementById('kiddush-allergies') || {}).value || '',
+    party_attending: partyYes ? 'Yes' : 'No',
+    party_guests: (document.getElementById('party-guests') || {}).value || '',
+    party_diet: (() => { const el = document.querySelector('#party-details .dietary-options'); return el ? Array.from(el.querySelectorAll('.diet-chip.selected')).map(c => c.textContent).join(', ') : ''; })(),
+    party_allergies: (document.getElementById('party-allergies') || {}).value || '',
+    song_request: (document.getElementById('song') || {}).value || '',
+    notes: (document.getElementById('notes') || {}).value || ''
+  };
+
+  // Fire and forget — show success immediately, POST in background
+  fetch('https://script.google.com/macros/s/AKfycby5diV_j3HDtQ-cJDhmdugXrTnR8E1nemr8tNPrFnY9RypRyps0xD1VdexZ3HfIb-ydXQ/exec', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  }).catch(err => console.warn('Backend post failed:', err));
+
+  // Show success screen
   document.getElementById('rsvp-form').style.display = 'none';
   document.getElementById('success-message').style.display = 'block';
   const song = document.getElementById('song').value.trim();
