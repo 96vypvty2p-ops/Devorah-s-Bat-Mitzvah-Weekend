@@ -492,6 +492,8 @@ function submitRSVP() {
   // Fire and forget — show success immediately, POST in background
   fetch('https://script.google.com/macros/s/AKfycby5diV_j3HDtQ-cJDhmdugXrTnR8E1nemr8tNPrFnY9RypRyps0xD1VdexZ3HfIb-ydXQ/exec', {
     method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(payload)
   }).catch(err => console.warn('Backend post failed:', err));
 
