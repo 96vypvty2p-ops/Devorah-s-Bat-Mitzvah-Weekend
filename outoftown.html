@@ -63,6 +63,17 @@
   .hotel-confirm { display: none; text-align: center; padding: 1.5rem; }
   .hotel-confirm p { font-size: 17px; color: var(--blue-mid); font-style: italic; line-height: 1.8; }
   @media (max-width: 480px) { nav a { padding: 0.75rem 1rem; font-size: 12px; } }
+/* ── Where to stay ── */
+.stay-intro { text-align: center; font-size: 22px; color: var(--navy); line-height: 1.6; margin-bottom: 1.75rem; }
+.stay-intro strong { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--blue); white-space: nowrap; }
+.stay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.stay-card { background: #fff; border: 1px solid var(--blue-border); border-top: 4px solid var(--blue); border-radius: 12px; padding: 2rem 1.25rem 1.75rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.stay-card-label { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue-soft); font-weight: 600; margin-bottom: 0.5rem; }
+.stay-card-name { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--navy); line-height: 1.2; }
+.stay-btn { display: inline-block; padding: 11px 28px; background: var(--blue); color: #fff; border-radius: 10px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; transition: background 0.2s; }
+.stay-btn:hover { background: var(--navy); }
+.stay-note { text-align: center; font-size: 17px; font-style: italic; color: var(--blue-mid); margin-bottom: 1.25rem; }
+@media (max-width: 560px) { .stay-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -186,9 +197,18 @@ function submitHotel() {
     <span class="section-divider-text">Where to Stay</span>
     <div class="section-divider-line"></div>
   </div>
-  <div class="info-card">
-    <p>We have room blocks reserved at two hotels. Book by <strong>January 1, 2027</strong> to get the group rate.<br><br><strong>Aloft</strong><br><a href="https://www.marriott.com/event-reservations/reservation-link.mi?guestreslink2=true&amp;id=1782325559604&amp;key=GRP" target="_blank" rel="noopener" style="color:var(--blue); font-style:normal; font-weight:600;">Book your room at Aloft &rarr;</a><br><br><strong>Archer Hotel Austin</strong><br><a href="https://archerhotel.com/austin/book/devorahs-bat-mitzvah" target="_blank" rel="noopener" style="color:var(--blue); font-style:normal; font-weight:600;">Book your room at Archer Hotel &rarr;</a><br><br>Questions? Reach out to Seren or Babette.</p>
-  </div>
+  <div class="stay-intro">We've reserved room blocks at two hotels.<br>Book by <strong>January 1, 2027</strong> to get the group rate.</div>
+<div class="stay-grid">
+<div class="stay-card">
+<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Aloft</div></div>
+<a class="stay-btn" href="https://www.marriott.com/event-reservations/reservation-link.mi?guestreslink2=true&amp;id=1782325559604&amp;key=GRP" target="_blank" rel="noopener">Book Your Room</a>
+</div>
+<div class="stay-card">
+<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Archer Hotel</div></div>
+<a class="stay-btn" href="https://archerhotel.com/austin/book/devorahs-bat-mitzvah" target="_blank" rel="noopener">Book Your Room</a>
+</div>
+</div>
+<p class="stay-note">Questions? Reach out to Seren or Babette.</p>
 
   <div class="section-divider">
     <div class="section-divider-line"></div>
