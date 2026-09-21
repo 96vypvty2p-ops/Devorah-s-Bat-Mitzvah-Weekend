@@ -73,7 +73,7 @@
 .stay-btn { display: inline-block; padding: 11px 28px; background: var(--blue); color: #fff; border-radius: 10px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; transition: background 0.2s; }
 .stay-btn:hover { background: var(--navy); }
 .stay-note { text-align: center; font-size: 17px; font-style: italic; color: var(--blue-mid); margin-bottom: 1.25rem; }
-@media (max-width: 560px) { .stay-grid { grid-template-columns: 1fr; } }
+.stay-card-rate { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--blue); margin-top: 0.6rem; } .stay-card-rate span { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; font-style: italic; color: var(--blue-soft); } @media (max-width: 560px) { .stay-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -98,7 +98,25 @@
 
   <div class="section-divider">
     <div class="section-divider-line"></div>
-    <span class="section-divider-text">Hotel Room Block</span>
+    <span class="section-divider-text">Where to Stay</span>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="stay-intro">We've reserved room blocks at two hotels.<br>Book by <strong>January 1, 2027</strong> to get the group rate.</div>
+<div class="stay-grid">
+<div class="stay-card">
+<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Aloft</div><div class="stay-card-rate">$159 <span>per night, plus tax</span></div></div>
+<a class="stay-btn" href="https://www.marriott.com/event-reservations/reservation-link.mi?guestreslink2=true&amp;id=1782325559604&amp;key=GRP" target="_blank" rel="noopener">Book Your Room</a>
+</div>
+<div class="stay-card">
+<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Archer Hotel</div><div class="stay-card-rate">$204 <span>per night, plus tax</span></div></div>
+<a class="stay-btn" href="https://archerhotel.com/austin/book/devorahs-bat-mitzvah" target="_blank" rel="noopener">Book Your Room</a>
+</div>
+</div>
+<p class="stay-note">Questions? Reach out to Seren or Babette.</p>
+
+<div class="section-divider">
+    <div class="section-divider-line"></div>
+    <span class="section-divider-text">Help Us Plan</span>
     <div class="section-divider-line"></div>
   </div>
 
@@ -110,7 +128,7 @@
     <div class="hotel-form-body">
       <div id="hotel-form-inner">
         <p style="font-size:16px; color:var(--blue-soft); font-style:italic; margin-bottom:1.25rem; line-height:1.7;">
-          We're setting up a room block and want to make sure we reserve enough rooms. Let us know your plans — no commitment needed yet!
+          Help us plan! Let us know whether you'll need a hotel room, even if you've already booked or are staying elsewhere.
         </p>
         <div class="hotel-form-group">
           <label class="hotel-label">Your Name *</label>
@@ -137,7 +155,7 @@
           <polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/>
           <polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/>
         </svg>
-        <p>Got it — thank you!<br>We'll be in touch with hotel details soon.</p>
+        <p>Got it — thank you!<br>Booking links are at the top of the page whenever you're ready.</p>
       </div>
     </div>
   </div>
@@ -192,23 +210,6 @@ function submitHotel() {
   });
 }
 </script>
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <span class="section-divider-text">Where to Stay</span>
-    <div class="section-divider-line"></div>
-  </div>
-  <div class="stay-intro">We've reserved room blocks at two hotels.<br>Book by <strong>January 1, 2027</strong> to get the group rate.</div>
-<div class="stay-grid">
-<div class="stay-card">
-<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Aloft</div></div>
-<a class="stay-btn" href="https://www.marriott.com/event-reservations/reservation-link.mi?guestreslink2=true&amp;id=1782325559604&amp;key=GRP" target="_blank" rel="noopener">Book Your Room</a>
-</div>
-<div class="stay-card">
-<div><div class="stay-card-label">Group Rate</div><div class="stay-card-name">Archer Hotel</div></div>
-<a class="stay-btn" href="https://archerhotel.com/austin/book/devorahs-bat-mitzvah" target="_blank" rel="noopener">Book Your Room</a>
-</div>
-</div>
-<p class="stay-note">Questions? Reach out to Seren or Babette.</p>
 
   <div class="section-divider">
     <div class="section-divider-line"></div>
