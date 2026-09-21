@@ -146,7 +146,7 @@
             <button class="hotel-btn" onclick="selectHotel(this, 'No')">✕ No</button>
           </div>
         </div>
-        <div class="hotel-submit-wrap">
+        <div class="hotel-form-group" id="hotel-booked-group" style="display:none; margin-top:1.25rem;"><label class="hotel-label">Where are you staying?</label><select id="hotel-booked" class="hotel-input"><option value="">Choose one…</option><option value="Aloft">I've booked at Aloft</option><option value="Archer Hotel">I've booked at Archer Hotel</option><option value="Not booked yet">I haven't booked yet</option></select></div><div class="hotel-submit-wrap">
           <button class="hotel-submit-btn" onclick="submitHotel()">Let us know ✦</button>
         </div>
       </div>
@@ -168,7 +168,7 @@ let hotelChoice = null;
 function selectHotel(btn, choice) {
   document.querySelectorAll('.hotel-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  hotelChoice = choice;
+  hotelChoice = choice; document.getElementById('hotel-booked-group').style.display = (choice === 'Yes') ? 'block' : 'none'; if (choice !== 'Yes') { document.getElementById('hotel-booked').value = ''; }
 }
 
 function submitHotel() {
@@ -185,7 +185,7 @@ function submitHotel() {
   }
 
   const btn = document.querySelector('.hotel-submit-btn');
-  btn.disabled = true;
+  var booked = (hotelChoice === 'Yes') ? document.getElementById('hotel-booked').value : ''; if (hotelChoice === 'Yes' && !booked) { alert('Please tell us where you are staying.'); return; } btn.disabled = true;
   btn.textContent = 'Sending…';
 
   fetch(HOTEL_SCRIPT_URL, {
@@ -196,7 +196,7 @@ function submitHotel() {
       form_type: 'hotel',
       name: name,
       email: email,
-      hotel_needed: hotelChoice
+      hotel_needed: hotelChoice, hotel_booked: booked
     })
   })
   .then(() => {
