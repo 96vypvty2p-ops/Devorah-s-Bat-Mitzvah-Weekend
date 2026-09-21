@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSVP · Devora's Bat Mitzvah</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root { --blue: #0038B8; --blue-mid: #3a52a0; --blue-soft: #6a7fbb; --blue-border: #d0d8f0; --blue-light: #b0bfe8; --navy: #0a1f6b; --warm-gray: #eeecea; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Cormorant Garamond', serif; font-size: 18px; background: var(--warm-gray); color: var(--navy); min-height: 100vh; }
+.site-header { background: #fff; border-bottom: 3px solid var(--blue); text-align: center; padding: 2rem 1.5rem 1.75rem; position: relative; overflow: hidden; }
+.header-stripe { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #aabcee 0%, var(--blue) 40%, var(--blue) 60%, #aabcee 100%); }
+.header-name { font-family: 'Playfair Display', serif; font-size: clamp(28px, 6vw, 42px); font-weight: 600; color: var(--navy); line-height: 1.1; margin-bottom: 0.2rem; }
+.header-subtitle { font-size: 17px; font-style: italic; color: var(--blue-mid); }
+nav { background: var(--blue); display: flex; justify-content: center; flex-wrap: wrap; }
+nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 0.85rem 1.5rem; transition: background 0.2s, color 0.2s; font-family: 'Cormorant Garamond', serif; }
+nav a:hover, nav a.active { background: rgba(255,255,255,0.15); color: #fff; }
+main { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.page-title { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+.page-title-line { flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, var(--blue-light), transparent); }
+.page-title-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+.soon-card { background: #fff; border: 1px solid var(--blue-border); border-top: 4px solid var(--blue); border-radius: 12px; padding: 2.5rem 1.5rem; text-align: center; margin-bottom: 1.25rem; }
+.soon-card h2 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 600; color: var(--navy); margin: 1rem 0 0.75rem; }
+.soon-card p { font-size: 19px; color: var(--blue-mid); font-style: italic; line-height: 1.8; }
+.soon-btn { display: inline-block; margin-top: 1.5rem; padding: 11px 28px; background: var(--blue); color: #fff; border-radius: 10px; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; transition: background 0.2s; }
+.soon-btn:hover { background: var(--navy); }
+.soon-note { text-align: center; font-size: 17px; font-style: italic; color: var(--blue-mid); }
+footer { background: var(--blue); color: rgba(255,255,255,0.7); text-align: center; padding: 1.5rem; font-size: 15px; letter-spacing: 0.1em; font-family: 'Cormorant Garamond', serif; }
+footer strong { color: #fff; }
+@media (max-width: 480px) { nav a { padding: 0.75rem 1rem; font-size: 12px; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="header-stripe"></div>
+<h1 class="header-name">Devora David</h1>
+<p class="header-subtitle">Bat Mitzvah · January 30, 2027</p>
+</header>
+<nav>
+<a href="index.html">Home</a>
+<a href="outoftown.html">Out of Town</a>
+<a href="faq.html">FAQ</a>
+<a href="rsvp.html" class="active">RSVP</a>
+</nav>
+<main>
+<div class="page-title">
+<div class="page-title-line"></div>
+<span class="page-title-text">RSVP</span>
+<div class="page-title-line"></div>
+</div>
+<div class="soon-card">
+<svg width="40" height="40" viewBox="0 0 100 100" style="display:block; margin: 0 auto;"><polygon points="50,8 92,75 8,75" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/><polygon points="50,92 8,25 92,25" fill="none" stroke="#0038B8" stroke-width="5" stroke-linejoin="round"/></svg>
+<h2>RSVPs open soon</h2>
+<p>We're putting the finishing touches on the RSVP form.<br>Check back soon — we'll let you know as soon as it's ready!</p>
+<a class="soon-btn" href="outoftown.html">Out-of-town? Book your hotel</a>
+</div>
+<p class="soon-note">Questions? Reach out to Seren or Babette.</p>
+</main>
+<footer>
+<strong>devora2027.com</strong> · Devora's Bat Mitzvah · January 30, 2027
+</footer>
+</body>
+</html>
