@@ -594,12 +594,12 @@ function toggleMute(e) {
 
 function downloadPersonalizedICS() {
   const events = window._rsvpEvents || [];
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Devora David Bat Mitzvah//EN'];
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Devora Laibo Bat Mitzvah//EN'];
 
   if (events.includes('friday')) {
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Shabbat Dinner',
       'DTSTART;TZID=America/Chicago:20270129T180000','DTEND;TZID=America/Chicago:20270129T203000',
-      'LOCATION:Chez Zee Restaurant\\, 5406 Balcones Drive\\, Austin\\, TX 78731','DESCRIPTION:Shabbat Dinner for Devora David Bat Mitzvah (approx. 6:00 PM)','END:VEVENT');
+      'LOCATION:Chez Zee Restaurant\\, 5406 Balcones Drive\\, Austin\\, TX 78731','DESCRIPTION:Shabbat Dinner for Devora Laibo Bat Mitzvah (approx. 6:00 PM)','END:VEVENT');
   }
   if (events.includes('kiddush')) {
     // Luncheon guests are coming to the service too, so one entry covers the whole morning
@@ -612,12 +612,12 @@ function downloadPersonalizedICS() {
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Celebration Party',
       'DTSTART;TZID=America/Chicago:20270130T183000','DTEND;TZID=America/Chicago:20270130T223000',
       'LOCATION:Shalom Austin Dell JCC\\, 7300 Hart Lane\\, Austin\\, TX 78731',
-      'DESCRIPTION:Celebration Party for Devora David Bat Mitzvah','END:VEVENT');
+      'DESCRIPTION:Celebration Party for Devora Laibo Bat Mitzvah','END:VEVENT');
   }
   if (events.includes('brunch')) {
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Farewell Brunch',
       'DTSTART;TZID=America/Chicago:20270131T090000','DTEND;TZID=America/Chicago:20270131T120000',
-      'LOCATION:Archer Hotel Austin\\, 3121 Palm Way\\, Austin\\, TX 78758','DESCRIPTION:Farewell Brunch for Devora David Bat Mitzvah','END:VEVENT');
+      'LOCATION:Archer Hotel Austin\\, 3121 Palm Way\\, Austin\\, TX 78758','DESCRIPTION:Farewell Brunch for Devora Laibo Bat Mitzvah','END:VEVENT');
   }
 
   lines.push('END:VCALENDAR');
