@@ -426,6 +426,9 @@ async function lookupGuest() {
       status.className = 'lookup-status found';
       document.getElementById('friday-section').classList.remove('visible');
       document.getElementById('sunday-section').classList.remove('visible');
+    } else if (data.ambiguous) {
+      status.textContent = 'We found more than one match — please enter your first and last name.';
+      status.className = 'lookup-status not-found';
     } else {
       status.textContent = 'We couldn\'t find that name. Try your last name only, or reach out to Seren for help.';
       status.className = 'lookup-status not-found';
