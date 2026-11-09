@@ -604,9 +604,9 @@ function downloadPersonalizedICS() {
   if (events.includes('kiddush')) {
     // Luncheon guests are coming to the service too, so one entry covers the whole morning
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Service & Kiddush Luncheon',
-      'DTSTART;TZID=America/Chicago:20270130T100000','DTEND;TZID=America/Chicago:20270130T133000',
+      'DTSTART;TZID=America/Chicago:20270130T094500','DTEND;TZID=America/Chicago:20270130T133000',
       'LOCATION:Agudas Achim Synagogue\\, 7300 Hart Lane\\, Austin\\, TX 78731',
-      'DESCRIPTION:Bat Mitzvah Service at 10:00 AM\\, followed by the Kiddush Luncheon','END:VEVENT');
+      'DESCRIPTION:Bat Mitzvah Service at 9:45 AM\\, followed by the Kiddush Luncheon','END:VEVENT');
   }
   if (events.includes('party')) {
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Celebration Party',
