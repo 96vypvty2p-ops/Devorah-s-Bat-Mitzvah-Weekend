@@ -350,6 +350,7 @@
 
     <div class="submit-wrap">
       <button class="submit-btn" onclick="submitRSVP()">Send my RSVP ✦</button>
+      <p id="submit-status" style="display:none; text-align:center; color:#c0392b; font-size:16px; font-style:italic; margin-top:1rem; line-height:1.6;"></p>
     </div>
     <p class="contact-note">Questions? Reach out to Seren or Babette — we're happy to help!</p>
   </div>
@@ -451,11 +452,21 @@ function toggleChip(chip) {
   chip.classList.toggle('selected');
 }
 
-function submitRSVP() {
+async function submitRSVP() {
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
+  const submitBtn = document.querySelector('.submit-btn');
+  const submitStatus = document.getElementById('submit-status');
+  const showProblem = (msg) => {
+    submitStatus.textContent = msg;
+    submitStatus.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send my RSVP ✦';
+    submitStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  submitStatus.style.display = 'none';
   if (!name || !email) {
-    alert('Please enter your name and email before submitting.');
+    showProblem('Please enter your name and email before sending.');
     return;
   }
 
@@ -474,9 +485,23 @@ function submitRSVP() {
   const dietFor = (detailsId) => Array.from(document.querySelectorAll('#' + detailsId + ' .diet-chip.selected')).map(c => c.textContent).join(', ');
   const fridayAnswer = fridayInvited ? attendAnswer('friday-details') : '';
   const brunchAnswer = brunchInvited ? attendAnswer('brunch-details') : '';
+  const kiddushAnswer = attendAnswer('kiddush-details');
+  const partyAnswer = attendAnswer('party-details');
+
+  // Every event shown to this guest needs a Yes or a Can't make it
+  const missing = [];
+  if (fridayInvited && !fridayAnswer) missing.push('Shabbat Dinner');
+  if (!kiddushAnswer) missing.push('Kiddush Luncheon');
+  if (!partyAnswer) missing.push('Celebration Party');
+  if (brunchInvited && !brunchAnswer) missing.push('Farewell Brunch');
+  if (missing.length) {
+    showProblem('Please tap Yes or Can\'t make it for: ' + missing.join(', ') + '.');
+    return;
+  }
+
   const fridayYes = fridayAnswer === 'Yes';
-  const kiddushYes = document.querySelector('#kiddush-details')?.classList.contains('show');
-  const partyYes = document.querySelector('#party-details')?.classList.contains('show');
+  const kiddushYes = kiddushAnswer === 'Yes';
+  const partyYes = partyAnswer === 'Yes';
   const brunchYes = brunchAnswer === 'Yes';
 
   if (fridayYes) window._rsvpEvents.push('friday');
@@ -500,11 +525,11 @@ function submitRSVP() {
     brunch_guests: brunchYes ? (document.getElementById('brunch-guests').value || '') : '',
     brunch_diet: brunchYes ? dietFor('brunch-details') : '',
     brunch_allergies: brunchYes ? (document.getElementById('brunch-allergies').value || '') : '',
-    kiddush_attending: kiddushYes ? 'Yes' : 'No',
+    kiddush_attending: kiddushAnswer,
     kiddush_guests: (document.getElementById('kiddush-guests') || {}).value || '',
     kiddush_diet: (() => { const el = document.querySelector('#kiddush-details .dietary-options'); return el ? Array.from(el.querySelectorAll('.diet-chip.selected')).map(c => c.textContent).join(', ') : ''; })(),
     kiddush_allergies: (document.getElementById('kiddush-allergies') || {}).value || '',
-    party_attending: partyYes ? 'Yes' : 'No',
+    party_attending: partyAnswer,
     party_guests: (document.getElementById('party-guests') || {}).value || '',
     party_diet: (() => { const el = document.querySelector('#party-details .dietary-options'); return el ? Array.from(el.querySelectorAll('.diet-chip.selected')).map(c => c.textContent).join(', ') : ''; })(),
     party_allergies: (document.getElementById('party-allergies') || {}).value || '',
@@ -512,13 +537,22 @@ function submitRSVP() {
     notes: (document.getElementById('notes') || {}).value || ''
   };
 
-  // Fire and forget — show success immediately, POST in background
-  fetch('https://script.google.com/macros/s/AKfycbyiCgAh8eaqDN1Ha4___AqTplM1n_p1wo1QU1w6khrJg0C3ihGeeZ5Mk4ibRrT4yAetFQ/exec', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  }).catch(err => console.warn('Backend post failed:', err));
+  // Send to the backend and wait for its answer, so the thank-you screen only shows once the RSVP is saved
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (!res.ok || result.status !== 'ok') throw new Error(result.message || ('HTTP ' + res.status));
+  } catch (err) {
+    console.warn('Backend post failed:', err);
+    showProblem('Something went wrong and your RSVP was not saved. Please try again in a moment, or text Seren and she will add you by hand.');
+    return;
+  }
 
   // Show success screen
   document.getElementById('rsvp-form').style.display = 'none';
