@@ -459,11 +459,22 @@ function submitRSVP() {
   // Build personalized ICS based on RSVP responses
   window._rsvpEvents = [];
 
-  const fridayYes = document.querySelector('#friday-section .attend-btn.selected-yes');
+  const fridayInvited = document.getElementById('friday-section').classList.contains('visible');
+  const brunchInvited = document.getElementById('sunday-section').classList.contains('visible');
+  // Yes / No / '' (unanswered) for an event card, read from its attend buttons
+  const attendAnswer = (detailsId) => {
+    const body = document.getElementById(detailsId).closest('.event-section-body');
+    if (body.querySelector('.attend-btn.selected-yes')) return 'Yes';
+    if (body.querySelector('.attend-btn.selected-no')) return 'No';
+    return '';
+  };
+  const dietFor = (detailsId) => Array.from(document.querySelectorAll('#' + detailsId + ' .diet-chip.selected')).map(c => c.textContent).join(', ');
+  const fridayAnswer = fridayInvited ? attendAnswer('friday-details') : '';
+  const brunchAnswer = brunchInvited ? attendAnswer('brunch-details') : '';
+  const fridayYes = fridayAnswer === 'Yes';
   const kiddushYes = document.querySelector('#kiddush-details')?.classList.contains('show');
   const partyYes = document.querySelector('#party-details')?.classList.contains('show');
-  const brunchYes = document.querySelector('#brunch-section .attend-btn.selected-yes') ||
-                    document.querySelector('#brunch-details')?.classList.contains('show');
+  const brunchYes = brunchAnswer === 'Yes';
 
   if (fridayYes) window._rsvpEvents.push('friday');
   if (kiddushYes) window._rsvpEvents.push('kiddush');
@@ -477,6 +488,15 @@ function submitRSVP() {
     email: email,
     phone: (document.getElementById('phone') || {}).value || '',
     hotel_needed: (() => { const b = document.querySelector('.hotel-toggle .attend-btn.selected-yes, .hotel-toggle .attend-btn.selected-no'); return b ? b.textContent.trim() : ''; })(),
+    weekend_invited: (fridayInvited || brunchInvited) ? 'Yes' : 'No',
+    friday_attending: fridayAnswer,
+    friday_guests: fridayYes ? (document.getElementById('friday-guests').value || '') : '',
+    friday_diet: fridayYes ? dietFor('friday-details') : '',
+    friday_allergies: fridayYes ? (document.getElementById('friday-allergies').value || '') : '',
+    brunch_attending: brunchAnswer,
+    brunch_guests: brunchYes ? (document.getElementById('brunch-guests').value || '') : '',
+    brunch_diet: brunchYes ? dietFor('brunch-details') : '',
+    brunch_allergies: brunchYes ? (document.getElementById('brunch-allergies').value || '') : '',
     kiddush_attending: kiddushYes ? 'Yes' : 'No',
     kiddush_guests: (document.getElementById('kiddush-guests') || {}).value || '',
     kiddush_diet: (() => { const el = document.querySelector('#kiddush-details .dietary-options'); return el ? Array.from(el.querySelectorAll('.diet-chip.selected')).map(c => c.textContent).join(', ') : ''; })(),
