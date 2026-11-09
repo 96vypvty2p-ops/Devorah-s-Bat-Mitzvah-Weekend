@@ -602,10 +602,11 @@ function downloadPersonalizedICS() {
       'LOCATION:Chez Zee Restaurant\\, 5406 Balcones Drive\\, Austin\\, TX 78731','DESCRIPTION:Shabbat Dinner for Devora David Bat Mitzvah (approx. 6:00 PM)','END:VEVENT');
   }
   if (events.includes('kiddush')) {
-    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Kiddush Luncheon',
-      'DTSTART;TZID=America/Chicago:20270130T120000','DTEND;TZID=America/Chicago:20270130T133000',
+    // Luncheon guests are coming to the service too, so one entry covers the whole morning
+    lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Service & Kiddush Luncheon',
+      'DTSTART;TZID=America/Chicago:20270130T100000','DTEND;TZID=America/Chicago:20270130T133000',
       'LOCATION:Agudas Achim Synagogue\\, 7300 Hart Lane\\, Austin\\, TX 78731',
-      'DESCRIPTION:Kiddush Luncheon following the Bat Mitzvah Service','END:VEVENT');
+      'DESCRIPTION:Bat Mitzvah Service at 10:00 AM\\, followed by the Kiddush Luncheon','END:VEVENT');
   }
   if (events.includes('party')) {
     lines.push('BEGIN:VEVENT','SUMMARY:Devora\'s Bat Mitzvah - Celebration Party',
