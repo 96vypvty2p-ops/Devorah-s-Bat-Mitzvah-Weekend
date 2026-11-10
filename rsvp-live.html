@@ -114,7 +114,7 @@
       <span class="page-title-text">RSVP</span>
       <div class="page-title-line"></div>
     </div>
-    <p class="page-intro">Please fill out one form per household.<br>RSVP by December 1, 2026.</p>
+    <p class="page-intro">Please fill out one form per household.<br>RSVP by December 15, 2026.</p>
 
     <!-- YOUR DETAILS + LOOKUP -->
     <div class="event-section">
@@ -417,13 +417,15 @@ async function lookupGuest() {
     const res = await fetch(APPS_SCRIPT_URL + '?name=' + encodeURIComponent(input));
     const data = await res.json();
 
+    applyClassmateMode(!!data.classmate);
+
     if (data.found && data.weekend) {
       status.textContent = '✓ Found! Your invitation includes the full weekend — Friday dinner and Sunday brunch have been added below.';
       status.className = 'lookup-status found';
       document.getElementById('friday-section').classList.add('visible');
       document.getElementById('sunday-section').classList.add('visible');
     } else if (data.found && !data.weekend) {
-      status.textContent = '✓ Found! Your invitation includes the Saturday events.';
+      status.textContent = (data.classmate ? '✓ Found! This invitation includes the Saturday service, Kiddush Luncheon and Celebration Party.' : '✓ Found! Your invitation includes the Saturday events.');
       status.className = 'lookup-status found';
       document.getElementById('friday-section').classList.remove('visible');
       document.getElementById('sunday-section').classList.remove('visible');
@@ -438,6 +440,22 @@ async function lookupGuest() {
     status.textContent = 'Something went wrong. Please try again or contact Seren directly.';
     status.className = 'lookup-status not-found';
   }
+}
+
+function applyClassmateMode(on) {
+  // Class families are invited for the classmate only: no guest counts, wording is about their child
+  window._classmate = !!on;
+  ['kiddush-guests', 'party-guests'].forEach(id => {
+    const group = document.getElementById(id).closest('.form-group');
+    if (group) group.style.display = on ? 'none' : '';
+  });
+  document.querySelectorAll('.event-section-body > .form-group > label').forEach(l => {
+    if (l.textContent.trim().indexOf('Will you be attending') === 0 || l.textContent.trim().indexOf('Will your child be attending') === 0) {
+      l.textContent = on ? 'Will your child be attending?' : 'Will you be attending?';
+    }
+  });
+  const intro = document.querySelector('.page-intro');
+  if (intro) intro.innerHTML = on ? intro.innerHTML.replace('one form per household', 'one form per classmate') : intro.innerHTML.replace('one form per classmate', 'one form per household');
 }
 
 function toggleAttend(btn, detailsId, val) {
@@ -510,7 +528,13 @@ async function submitRSVP() {
   if (brunchYes) window._rsvpEvents.push('brunch');
 
   // Gather form data for backend
-  const payload = {
+  if (window._classmate) {
+      // classmate only: count the one child as 1 guest when attending
+      document.getElementById('kiddush-guests').value = kiddushYes ? '1' : '';
+      document.getElementById('party-guests').value = partyYes ? '1' : '';
+    }
+
+    const payload = {
     form_type: 'rsvp',
     name: name,
     email: email,
